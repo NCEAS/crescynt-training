@@ -7,6 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 <br>
 <img src="images/sb_banner.jpg">
 <br>
@@ -35,5 +36,7 @@ Have up-to-date versions of `R` and RStudio and have RStudio configured with Git
 2. Download and install RStudio: http://www.rstudio.com/download 
 3. Create a GitHub account: https://github.com *Note! Shorter names that kind of identify you are better, and use your work email!*
 
-<img src="https://www.nceas.ucsb.edu/files/logos/NCEAS/NCEAS-full%20logo-4C.jpg" width="250px">
 
+<br />
+
+<img  src="https://www.nceas.ucsb.edu/files/logos/NCEAS/NCEAS-full%20logo-4C.jpg" width="250px" align="left"> <img src="images/CRESCYNT_logo.png" width="200px" align="right">  
