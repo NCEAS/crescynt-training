@@ -1,0 +1,19 @@
+```{r, echo=FALSE, message=FALSE}
+
+library(tidyverse)
+library(googlesheets) # install.packages('googlesheets')
+library(knitr)
+
+## setup for our googlesheet
+# gs_auth(new_user = TRUE) ## authorize googledocs -- requires user interaction with default browser. Do this once!
+gsheet_url <- 'https://docs.google.com/spreadsheets/d/13LjFY4xOgbttcccbn-tkbtb6pnij-AOWwnCDuI4VUjw/edit#gid=0'
+
+## read in googlesheet
+gs <- gs_url(gsheet_url) %>%
+  gs_read()
+# head(gs)
+
+knitr::kable(gs)
+
+```
+
