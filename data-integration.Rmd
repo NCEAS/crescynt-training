@@ -7,6 +7,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+<br>
+<img src="images/sb_banner.jpg">
+<br>
 
 # Welcome
 
