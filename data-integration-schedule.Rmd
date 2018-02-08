@@ -1,10 +1,10 @@
 |time       |      Day 1|      Day 2|      Day 3|      Day 4|
 |:----------|----------:|----------:|----------:|----------:|
-|9-10:30    |  [Motivation](http://ohi-science.org/data-science-training/overview.html), [R, RStudio & RMarkdown](http://ohi-science.org/data-science-training/rstudio.html#rstudio) |  [Data wrangling: `tidyr`](http://ohi-science.org/data-science-training/tidyr) | Kaneohe Bay Workathon (all day) | Kaneohe Bay Workathon (all day)  | | | 
+|9-10:30    |  Coral Reefs and Data Science |   [Data wrangling: `dplyr`](http://ohi-science.org/data-science-training/dplyr.html#dplyr) | Kaneohe Bay Workathon (all day) | Kaneohe Bay Workathon (all day)  | | | 
 |break      |  | | | |
-|11-12:30   | [RStudio+GitHub+RMarkdown](http://ohi-science.org/data-science-training/rstudio-github.html)  |  [Programming in R ](http://ohi-science.org/data-science-training/programming.html)  | | |
+|11-12:30   | [Motivation](http://ohi-science.org/data-science-training/overview.html), [R, RStudio & RMarkdown](http://ohi-science.org/data-science-training/rstudio.html#rstudio)  |   [Data wrangling: `tidyr`](http://ohi-science.org/data-science-training/tidyr)| | |
 |lunch      |  || | |
-|13:00-14:30 |  [Visualization (ggplot2)](http://ohi-science.org/data-science-training/viz) | [Collaborating with GitHub](http://ohi-science.org/data-science-training/collaborating.html)  | | |
+|13:00-14:30 |  [RStudio+GitHub+RMarkdown](http://ohi-science.org/data-science-training/rstudio-github.html) | [Programming in R ](http://ohi-science.org/data-science-training/programming.html)  | | |
 |break      |  |  | | |
-|15:00-16:30 |  [Data wrangling: `dplyr`](http://ohi-science.org/data-science-training/dplyr.html#dplyr) |  TBD... | | |
+|15:00-16:30 | [Visualization (ggplot2)](http://ohi-science.org/data-science-training/viz)|   [Collaborating with GitHub](http://ohi-science.org/data-science-training/collaborating.html)   | | |
 
