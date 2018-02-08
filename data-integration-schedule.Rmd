@@ -1,8 +1,8 @@
 |time       |      Day 1|      Day 2|      Day 3|      Day 4|
 |:----------|----------:|----------:|----------:|----------:|
-|9-10:30    |  Coral Reefs and Data Science (CRESCYNT+NCEAS) |   [Data wrangling: `dplyr`](http://ohi-science.org/data-science-training/dplyr.html#dplyr) (NCEAS) | Kaneohe Bay Workathon (all day) | Kaneohe Bay Workathon (all day)  | 
+|9-10:30    |  Welcome and goals of the workshop (CRESCYNT); Motivation for data science and coral reefs (NCEAS) |   [Data wrangling: `dplyr`](http://ohi-science.org/data-science-training/dplyr.html#dplyr) (NCEAS) | Kaneohe Bay Workathon (all day) | Kaneohe Bay Workathon (all day)  | 
 |break      |  | | | |
-|11-12:30   | [Motivation](http://ohi-science.org/data-science-training/overview.html), [R, RStudio & RMarkdown](http://ohi-science.org/data-science-training/rstudio.html#rstudio) (NCEAS) |   [Data wrangling: `tidyr`](http://ohi-science.org/data-science-training/tidyr) (NCEAS) |  | |
+|11-12:30   | [R, RStudio & RMarkdown](http://ohi-science.org/data-science-training/rstudio.html#rstudio) (NCEAS) |   [Data wrangling: `tidyr`](http://ohi-science.org/data-science-training/tidyr) (NCEAS) |  | |
 |lunch      |  || | |
 |13:00-14:30 |  [RStudio+GitHub+RMarkdown](http://ohi-science.org/data-science-training/rstudio-github.html) (NCEAS) | [Programming in R ](http://ohi-science.org/data-science-training/programming.html) (NCEAS) | Imagery/ interpolation breakout group (CRESCYNT) | Group Discussion/ Wrapup |
 |break      |  |  | | |
