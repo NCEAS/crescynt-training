@@ -4,7 +4,7 @@
 |break      |  | | | |
 |11-12:30   | [Motivation](http://ohi-science.org/data-science-training/overview.html), [R, RStudio & RMarkdown](http://ohi-science.org/data-science-training/rstudio.html#rstudio) (NCEAS) |   [Data wrangling: `tidyr`](http://ohi-science.org/data-science-training/tidyr) (NCEAS) |  | |
 |lunch      |  || | |
-|13:00-14:30 |  [RStudio+GitHub+RMarkdown](http://ohi-science.org/data-science-training/rstudio-github.html) (NCEAS) | [Programming in R ](http://ohi-science.org/data-science-training/programming.html) (NCEAS) | Breakout group for imagery (CRESCYNT) | Group Discussion/ Wrapup |
+|13:00-14:30 |  [RStudio+GitHub+RMarkdown](http://ohi-science.org/data-science-training/rstudio-github.html) (NCEAS) | [Programming in R ](http://ohi-science.org/data-science-training/programming.html) (NCEAS) | Imagery/ interpolation breakout group (CRESCYNT) | Group Discussion/ Wrapup |
 |break      |  |  | | |
-|15:00-16:30 | [Visualization (ggplot2)](http://ohi-science.org/data-science-training/viz) (NCEAS) |   [Collaborating with GitHub](http://ohi-science.org/data-science-training/collaborating.html) (NCEAS)  | Breakout group for imagery (CRESCYNT)  | Group Discussion/ Wrapup |
+|15:00-16:30 | [Visualization (ggplot2)](http://ohi-science.org/data-science-training/viz) (NCEAS) |   [Collaborating with GitHub](http://ohi-science.org/data-science-training/collaborating.html) (NCEAS)  | Imagery/ interpolation breakout group (CRESCYNT)  | Group Discussion/ Wrapup |
 
