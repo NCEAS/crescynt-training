@@ -26,5 +26,10 @@ This training workshop will...
 
 ## Prerequisites
 
-<img src="https://www.nceas.ucsb.edu/files/logos/NCEAS/NCEAS-full%20logo-4C.jpg" width="250px">
+Prepare the data you are planning to archive!!
+
+<br />
+
+<img  src="https://www.nceas.ucsb.edu/files/logos/NCEAS/NCEAS-full%20logo-4C.jpg" width="250px" align="left"> <img src="images/CRESCYNT_logo.png" width="200px" align="right">  
+
 
