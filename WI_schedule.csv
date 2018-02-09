@@ -1,0 +1,10 @@
+Time,Wed 03/07,Thu 03/08,Fri 03/09,Sat 03/10
+9:00 - 9:30,Welcome and Goals of the workshop (CRESCYNT),Introduction to metadata (NCEAS),Principles of open science (NCEAS),Working with your data
+9:30 - 10:00,Introduction to data repository (NCEAS),Introduction to metadata (NCEAS),Working with your data,Working with your data
+10:00 - 10:30,Discussion: Data repositrory used within the Coral Reef community (CRESCYNT),Exercise - Writing your own metadata,Working with your data,Working with your data
+10:30 - 11:00,Break,Break,Break,Break
+11:00 - 12:00,Exercise - Data Discovery,[Submitting data to the KNB (NCEAS)](https://nceas.github.io/sasap-training/materials/reproducible-analysis-in-r/data-documentation-and-publishing.html),Working with your data,Working with your data
+12:00 - 01:00,Lunch,Lunch,Lunch,Lunch
+1:00 - 2:30,Data management plans (NCEAS),[Data modeling and tidy data (NCEAS)](https://nceas.github.io/sasap-training/materials/reproducible-analysis-in-r/data-modeling-tidy-data.html),Working with your data,Working with your data
+2:30 - 3:00,Break,Break,Break,Break
+3:00 - 4:30,Naming files (NCEAS),Exercise - tidying your data,Working with your data,Final discussion and next steps
