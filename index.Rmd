@@ -1,8 +1,7 @@
 ---
-title: "My Website"
+title: "CRESCYNT - NCEAS  training on Data Rescue and Integration "
 ---
 
-# CRESCYNT - NCEAS  training
 
 CORAL REEF SCIENCE & CYBERINFRASTRUCTURE NETWORK (CRESCYNT) - NCEAS training material for data rescue and data integration workshops 2018.
 
