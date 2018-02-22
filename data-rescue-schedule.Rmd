@@ -1,4 +1,4 @@
-```{r, echo=FALSE, message=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 library(tidyverse)
 library(googlesheets) # install.packages('googlesheets')
@@ -9,9 +9,10 @@ library(knitr)
 # gsheet_url <- 'https://docs.google.com/spreadsheets/d/13LjFY4xOgbttcccbn-tkbtb6pnij-AOWwnCDuI4VUjw/edit#gid=0'
 # 
 # ## read in googlesheet
-# gs <- gs_url(gsheet_url) %>%
-#   gs_read()
-# # head(gs)
+# gs <- googlesheets::gs_url(gsheet_url) %>%
+#   gs_read() %>%
+#   write.csv("WI_schedule.csv")
+# head(gs)
 
 gs <-read.csv("WI_schedule.csv")
 
