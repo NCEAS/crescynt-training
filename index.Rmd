@@ -1,5 +1,5 @@
 ---
-title: "CRESCYNT - NCEAS Training Workshops on Data Rescue and Integration "
+title: "CRESCYNT - NCEAS  Data Science for Coral Reefs Workshops"
 output: 
   html_document:
     include:
@@ -12,7 +12,8 @@ output:
 <br>
 <br></br>
 
-# Data Science for Coral Reefs Workshops 2018
+# Data Science for Coral Reefs Workshops 
+# Training Workshops on Data Rescue and Integration 2018
 
 
 ## Data Rescue Workshop
@@ -21,7 +22,7 @@ When: March 7-10, 2018
 
 Where: NCEAS, Santa Barbara, California, USA
 
-This workshop is recommended for senior scientists with rich "dark"" data on coral reefs that needs to be harvested and made accessible in an open repository. Students or staff working with senior scientists are also encouraged to apply. Topics covered on days 1 and 2 of the workshop will cover the basic principles of data archiving and data repositories, including Darwin Core and EML metadata formats, how to write good metadata, how to archive data on the KNB data repository and elsewhere, data preservation workflow and best practices, and how to improve data discoverability and reusability. Additionally, participants will spend approximately 2 days working in pairs to archive their own data using these principles, so applying with a team member from your research group is highly recommended.
+This workshop is recommended for senior scientists with rich "dark" data on coral reefs that needs to be harvested and made accessible in an open repository. Students or staff working with senior scientists are also encouraged to apply. Topics covered on days 1 and 2 of the workshop will cover the basic principles of data archiving and data repositories, including Darwin Core and EML metadata formats, how to write good metadata, how to archive data on the KNB data repository and elsewhere, data preservation workflow and best practices, and how to improve data discoverability and reusability. Additionally, participants will spend approximately 2 days working in pairs to archive their own data using these principles, so applying with a team member from your research group is highly recommended.
 
 - More info: https://crescyntblog.org/2017/12/22/crescynt-workshop-1-data-rescue/
 - Schedule: https://nceas.github.io/crescynt-training/data-rescue.html
