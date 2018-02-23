@@ -12,7 +12,7 @@ output:
 <br>
 <br></br>
 
-# Data Science for Coral Reefs Workshops 
+
 # Training Workshops on Data Rescue and Integration 2018
 
 
