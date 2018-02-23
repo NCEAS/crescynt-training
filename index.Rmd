@@ -21,6 +21,8 @@ When: March 7-10, 2018
 
 Where: NCEAS, Santa Barbara, California, USA
 
+This workshop is recommended for senior scientists with rich "dark"" data on coral reefs that needs to be harvested and made accessible in an open repository. Students or staff working with senior scientists are also encouraged to apply. Topics covered on days 1 and 2 of the workshop will cover the basic principles of data archiving and data repositories, including Darwin Core and EML metadata formats, how to write good metadata, how to archive data on the KNB data repository and elsewhere, data preservation workflow and best practices, and how to improve data discoverability and reusability. Additionally, participants will spend approximately 2 days working in pairs to archive their own data using these principles, so applying with a team member from your research group is highly recommended.
+
 - More info: https://crescyntblog.org/2017/12/22/crescynt-workshop-1-data-rescue/
 - Schedule: https://nceas.github.io/crescynt-training/data-rescue.html
 
@@ -30,6 +32,8 @@ Where: NCEAS, Santa Barbara, California, USA
 When: March 12-16, 2018
 
 Where: NCEAS, Santa Barbara, California, USA
+
+This workshop is recommended for early to mid-career and senior scientists with interest in applying technical skills to collaborative research questions and committed to subsequently sharing what they learn. Participants will learn how to structure and combine heterogeneous data sets relevant to coral reef scientists in a collaborative way. Topics covered on days 1 and 2 of the workshop will cover reproducible workflows using R/RStudio and RMarkdown, collaborative coding with GitHub, strategies for team research, data modeling and data wrangling, and advanced data integration and visualization tools. Participants will also spend 2 days working in small teams to integrate various coral reef datasets to practice the skills learned and develop workflows for data tidying and integration.
 
 - More info: https://crescyntblog.org/2017/12/22/crescynt-workshop-2-data-integration-and-team-science/
 - Schedule: https://nceas.github.io/crescynt-training/data-integration.html
