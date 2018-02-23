@@ -1,10 +1,36 @@
 ---
-title: "CRESCYNT - NCEAS  training on Data Rescue and Integration "
+title: "CRESCYNT - NCEAS Training Workshops on Data Rescue and Integration "
+output: 
+  html_document:
+    include:
+      after_body: footer.html
 ---
 
 
-CORAL REEF SCIENCE & CYBERINFRASTRUCTURE NETWORK (CRESCYNT) - NCEAS training material for data rescue and data integration workshops 2018.
+<br>
+<img src="images/sb_banner.jpg">
+<br>
+<br></br>
 
-- Data Rescue: https://crescyntblog.org/2017/12/22/crescynt-workshop-1-data-rescue/
-- Data Integration: https://crescyntblog.org/2017/12/22/crescynt-workshop-2-data-integration-and-team-science/
+# Data Science for Coral Reefs Workshops 2018
+
+
+## Data Rescue Workshop
+
+When: March 7-10, 2018
+
+Where: NCEAS, Santa Barbara, California, USA
+
+- More info: https://crescyntblog.org/2017/12/22/crescynt-workshop-1-data-rescue/
+- Schedule: https://nceas.github.io/crescynt-training/data-recue.html
+
+
+## Data Integration Workshop
+
+When: March 12-16, 2018
+
+Where: NCEAS, Santa Barbara, California, USA
+
+- More info: https://crescyntblog.org/2017/12/22/crescynt-workshop-2-data-integration-and-team-science/
+- Schedule: https://nceas.github.io/crescynt-training/data-integration.html
 

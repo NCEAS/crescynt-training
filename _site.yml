@@ -1,2 +1,6 @@
 name: "crescynt-nceas-training"
 output_dir: "docs"
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate

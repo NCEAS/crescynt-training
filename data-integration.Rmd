@@ -1,6 +1,9 @@
 ---
 title: "Data Integration and Team Science"
-output: html_document
+output: 
+  html_document:
+    include:
+      after_body: footer.html
 ---
 
 ```{r setup, include=FALSE}
@@ -37,6 +40,3 @@ Have up-to-date versions of `R` and RStudio and have RStudio configured with Git
 3. Create a GitHub account: https://github.com *Note! Shorter names that kind of identify you are better, and use your work email!*
 
 
-<br />
-
-<img  src="https://www.nceas.ucsb.edu/files/logos/NCEAS/NCEAS-full%20logo-4C.jpg" width="250px" align="left"> <img src="images/CRESCYNT_logo.png" width="200px" align="right">  
