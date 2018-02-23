@@ -22,7 +22,7 @@ When: March 7-10, 2018
 Where: NCEAS, Santa Barbara, California, USA
 
 - More info: https://crescyntblog.org/2017/12/22/crescynt-workshop-1-data-rescue/
-- Schedule: https://nceas.github.io/crescynt-training/data-recue.html
+- Schedule: https://nceas.github.io/crescynt-training/data-rescue.html
 
 
 ## Data Integration Workshop
