@@ -37,6 +37,6 @@ Have up-to-date versions of `R` and RStudio and have RStudio configured with Git
 
 1. Download and install R: https://cloud.r-project.org
 2. Download and install RStudio: http://www.rstudio.com/download 
-3. Create a GitHub account: https://github.com *Note! Shorter names that kind of identify you are better, and use your work email!*
+3. Create a GitHub account: https://github.com *Note! Shorter names that kind of identify you are better*
 
 
