@@ -1,57 +1,56 @@
 ---
 title: "Data management"
 time_slot: "20min"
-output: html_document
+output: slidy_presentation
 
 ---
 
-# Why Manage Data?
 
-## The Need for Data Management: Big Data
+## Why Manage your data?
 
-![](images/ClimateNews.png)
+- Understand the needs and motivations behind data management planning
+
 
 ## The Need for Data Management: Data Deluge
 
 ![](images/Deluge.png)
+
 
 ## The Need for Data Management: Data Entropy
 
 <br>
 ![](images/Entropy.png)
 
+
 ## The Need for Data Management: Public Perception
 
 ![](images/ClimateGate.png)
 
-***
+*"The climate scientists at the centre of a media storm over leaked emails were  cleared of accusations that they fudged their results and silenced critics, but a review found they had failed to be open enough about their work."*
 
-<br><br>
+## Benefits for Your Own Research
 
-*"The climate scientists at the centre of a media storm over leaked emails were yesterday cleared of accusations that they fudged their results and silenced critics, but a review found they had failed to be open enough about their work."*
+>- Keep yourself organized – be able to find your files 
+>- Capture your science processes to make them reproducible
+>- Better control versions of data – easily identify versions that can be periodically purged
+>- Avoid data loss
+>- Format your data for re-use
+>- Document your data for your own recollection, accountability, and re-use
+>- Gain credibility and rpecognition for your science efforts through data sharing!
 
-## For Your Own Research
 
->- Keep yourself organized – be able to find your files (data inputs, analytic scripts, outputs at various stages of the analytic process, etc.) 
-- Track your science processes for reproducibility – be able to match up your outputs with exact inputs and transformations that produced them
-- Better control versions of data – easily identify versions that can be periodically purged
-- To avoid data loss (e.g. making backups)
-- Format your data for re-use (by yourself or others)
-- Be prepared: Document your data for your own recollection, accountability, and re-use (by yourself or others) 
-- Gain credibility and recognition for your science efforts through data sharing!
-
-## For the Scientific Community
+## Benefits for the Scientific Community
 
 - Data is a valuable asset – it is expensive and time consuming to collect 
 - Data should be managed to:
-  - maximize the effective use and value of data and information assets
-  - continually improve the quality including: data accuracy, integrity, integration, timeliness of data capture and presentation, relevance, and usefulness
-  - ensure appropriate use of data and information
-  - facilitate data sharing
-  - ensure sustainability and accessibility in long term for re-use in science
+   - maximize the effective use and value of data and information assets
+   - continually improve the quality including: data accuracy, integrity, integration, timeliness of data capture and presentation, relevance, and usefulness
+   - ensure appropriate use of data and information
+   - facilitate data sharing 
+   - ensure sustainability and accessibility in long term for re-use in science
 
 
-# Data Life Cycle
+## Data Life Cycle
 
 The data life cycle provides a high level overview of the stages involved in successful management and preservation of data for use and reuse.
 
@@ -76,33 +75,43 @@ For any scientific project, it is good practice to prepare a data management pla
 
 ![](images/broken-laptop.png) ![](images/screen-keyboard.png)
 
-## Document your data right away
 
-Document and preserve your data when you are actively working on them! 
+## Document: Sooner the Better
 
-![Michener_et_al_1997](images/michener97.png)
+Document and preserve your data when you are actively analyzing them! 
 
-This is the time at which you know and understand most about your project’s data, therefore when it is the easiest for you to document and preserve them. Then slowly or more rapidly due to time and life events, what you know about the data declines to zero eventually. 
+![Adapted from Michener et al, 1997](images/michener97.png)
 
-## Document your data right away
+At this the time, it is the easiest for you to document and preserve your project’s data, because you know and understand the most about them. Then slowly, or more rapidly due to life events and technology shifts, what you know about the data declines.
 
-It is also for your furture you, you would not have to remember:
+## Document Soon, it is also for yourself
 
->- the name of that file?
+You would not have to remember:
 
->- the directory where you put it?
+>- The name of that file?
+>- The directory where you put it?
+>- The units those measurements were taken in?
+>- Which sample site was which?
+>- Is it the cleaned version of the dataset used for publication?
 
->- the units those measurements were taken in?
+.  .  . 
 
->- which sample site was which?
-
->- Is it the cleaned version?
+=> Easier to share with others, good for collaborations!
 
 
 ## Not only Data
 
 We mainly have beeing talking about data, but these rules apply to all the scientific processes and products genereated by a reasearch project, including:
->- the scientific workflow
->- the scripts developed to manipulate and analyse the data
->- the models the tools you used or developed
 
+>- Your scientific workflow
+>- Your scripts developed to manipulate and analyse the data
+>- The models the tools you used or developed
+
+
+## Resources used:
+
+- DataONE, Data Life Cycle: https://www.dataone.org/data-life-cycle
+- DataONE data management guide: https://www.dataone.org/sites/all/documents/DataONE-PPSR-DataManagementGuide.pdf
+- ESIP, Data Management Plans: http://commons.esipfed.org/datamanagementshortcourse (benefits slides were adapted from this material)
+- Borer, Elizabeth T., Eric W. Seabloom, Matthew B. Jones, and Mark Schildhauer. (2009) "Some Simple Guidelines for Effective Data Management." The Bulletin of the Ecological Society of America 90, no. 2: 205-14. https://doi.org/10.1890/0012-9623-90.2.205.
+- Michener, W. K. (2015). Ten Simple Rules for Creating a Good Data Management Plan. PLoS Comput Biol , 11(10). presented at the 10/2015.  https://doi.org/10.1371/journal.pcbi.1004525

@@ -1,7 +1,9 @@
 ---
-title: "Data modeling"
+title: "Strucutring your Data"
 time_slot: 40 minutes
-output: html_document
+output:
+  ioslides_presentation: default
+  slidy_presentation: default
 ---
 
 # Data Modeling & Tidy Data
@@ -11,7 +13,7 @@ output: html_document
 - Understand basics of data models
 - Learn how to design and create effective data tables
 
-## Benefits of tidy data 
+## Benefits of normalized or "tidy" data 
 
 - Powerful search and filtering
 - Handle large and/or complex data sets
@@ -20,15 +22,71 @@ output: html_document
 
 . . . 
 
-*=> Easier to conduct your Analysis!!*
+*=> Easier to conduct your Analysis and even so for others!!*
+
+
+## Data Heterogeneity
+
+Data are heterogeneous in:
+
+>- Structure (schema)
+   - Logical model of the data (e.g., tables, hierarchical trees, raster images, etc.)
+>- Semantics
+   - Specific meaning of the data (e.g., nature and types of measurements, importance of contextual information, interpretation of record structure, etc.): documentation
+>- Syntax
+   - Digital format of the data (e.g., csv, “R dataframe”, NetCDF, Excel XLSX, DBF, etc.)
+
+
+## Why Tabular Data?
+
+Spreadsheets are (still) the primary data entry tool of the digital age!
+
+![](images/spreadsheet-1.png)
+
+
+## Spreadsheets
+
+![](images/theGood.png) *the Good*:
+
+- Quick on the draw (clickety-click and you’re ready for action)
+- Always there (on most everyone’s computer)
+- Smarter than he lets on (stats, pivot tables, VB scripts)
+- Cleans up real pretty (graphics, fonts, colors, borders)
+
+
+## Spreadsheets
+
+![](images/theBad.png) *the Bad*:
+
+- Also a fast shooter  (click&fire)
+- No scruples (delete row, click, ctrl-x/ctrl-c, re-sort, save)
+- Talks a good story, but unreliable (e.g. http://www.practicalstats.com/xlsstats/excelstats.html)
+
+
+## Spreadsheets
+
+![](images/theUgly.png) *the Ugly*:
+
+- Ill-mannered: takes your data prisoner; conflates raw data with summary data
+- Gaudy: Use of visual cues– color, font, borders– to indicate critical metadata or other semantic tidbits
+- Shifty:  Cross-linking of worksheets sets up “invisible” dependencies
+- Shiftless: Provenance is entirely lost
+- The more complicated your Spreadsheet, the UGLIER it gets in terms of using it with other software
+
+. . . 
+
+*_=>  Encourages you to mix your data and your analaysis_*
+
 
 ## Data Organization
 
 ![](images/excel-org-01.png)
 
+
 ## Multiple tables
 
 ![](images/excel-org-02.png)
+
 
 ## Inconsistent observations
 
@@ -42,13 +100,34 @@ output: html_document
 
 ![](images/excel-org-05.png)
 
-## Good enough data modeling
+. . . 
 
-### Denormalized data
+*_=>  A Spreadsheet is not a table !!*
+
+
+# Good enough data modeling
+
+## Terminological Soup
+
+Table = Relation = Data set   (~ Worksheet) 
+
+Column = Variable = Attribute = Characteristic
+
+Row = Record = Tuple  <> Observation (eek)
+
+Keys are used to Join or Merge
+
+Cell = Value = Measurement (“Observation”)
+
+Data Model = Schema
+
+
+## Denormalized data
 
 - Observations about different entities combined
 
 ![](images/table-denorm.png)
+
 In the above example, each row has measurements about both the `site` at which observations
 occurred, as well as observations of two individuals of possibly different species
 found at that site.  This is *not normalized* data.
@@ -58,10 +137,9 @@ wide number of columns.  Note that, should one encounter a new species in the su
 wold have to add new columns to the table.  This is difficult to analyze, understand, and
 maintain.
 
-### Tabular data
+## Tabular data
 
-__Observations__. A better way to model data is to organize the observations about each type of entity
-in its own table.  This results in:
+__Observations__. A better way to model data is to organize the observations about each type of entity in its own table.  This results in:
 
 - Separate tables for each type of entity measured
 - Each row represents a single observed entity
@@ -99,6 +177,7 @@ at the site with the name `Taku`.
 
 ![](images/tables-keys.png)
 
+
 ## Entity-Relationship Model (ER)
 
 An Entity-Relationship model allows us to compactly draw the structure of the
@@ -109,21 +188,6 @@ In the above model, one can see that each site in the `SITES` table must have on
 or more observations in the `PLOTOBS` table, whereas each `PLOTOBS` has one and 
 only one `SITE`.
 
-## Merging data
-
-Frequently, analysis of data will require merging these separately managed tables
-back together.  There are multiple ways to join the observations in two tables, based
-on how the rows of one table are merged with the rows of the other.
-
-When conceptualizing merges, one can think of two tables, one on the *left* and
-one on the *right*. The most common (and often useful) join is when you merge the subset 
-of the rows from the left table with their matching rows from the right table: 
-this is called an *INNER JOIN*.  Other types of join are possible as well, including
-a *LEFT JOIN* and a *RIGHT JOIN*.  
-
-![](images/sql-joins-venn.png)
-In the figure above, the blue regions show the set of rows that are included in the result.
-For the INNER join, the rows returned are all rows in A that have a matching row in B.
 
 ## Simple Guidelines for Effective Data
 
@@ -137,6 +201,17 @@ For the INNER join, the rows returned are all rows in A that have a matching row
 - No spaces
 
 - [Borer et al. 2009. **Some Simple Guidelines for Effective Data Management.** Bulletin of the Ecological Society of America.](http://matt.magisa.org/pubs/borer-esa-2009.pdf)
+
+
+## Semantic Ambiguity
+
+>- Column headers: 
+  - Avoid cryptic names
+  - Concise, but not meaningful 
+  - Units (kg or g?) 
+>- Color coding
+   - avoid using formatting (implicit)
+   - add a column to store this information with a flag
 
 ## Data modeling exercise
 
