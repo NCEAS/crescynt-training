@@ -1,0 +1,51 @@
+---
+title: "Data Submission Exercise"
+author: "Jeanette Clark"
+date: "3/1/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Publishing data from the web
+
+Each data repository tends to have its own mechanism for submitting data and
+providing metadata.  With repositories like the KNB Data Repository and the
+Arctic Data Center, we provide some easy to use web forms for editing and submitting
+a data package.  Let's walk through a web submission to see what you might expect.
+
+## Download the data to be used for the tutorial
+
+I've already uploaded the test data package, and so you can access the data here:
+
+- https://dev.nceas.ucsb.edu/#view/knb.109188.1
+
+Grab both CSV files and store them in a convenient folder.
+
+### A note on attribute metadata
+
+For simplicity, we are not demonstrating here how to create attribute (column) level metadata in this exercise, like what is seen in the example shown earlier (https://dev.nceas.ucsb.edu/#view/urn:uuid:bff7deff-804d-4a53-aed6-e22ccc3de290). If you are interested in learning more about how you could do that, I recommend the EML package: https://github.com/ropensci/EML.
+
+If you ever come across a data repository where the data submission does not require attribute level metadata, it is always a good idea to submit supplementary files that describe the columns in your dataset. It is extra helpful if these files are highly regular and tabular (like a csv file, as opposed to a word document). This makes it much easier to ingest the information later into structured metadata if you or someone else chooses to.
+
+Important attribute information to capture includes but is not limited to:
+
+* **Column names** eg: TEMP
+* **Column name definitions** eg: Temperature of sample
+* **Column units** eg: Celsius 
+* **Date formats** eg: "YYYY-MM-DD"
+* **Missing value codes and definitions** eg: "NA", "no sample collected"
+
+## Login via ORCID
+
+We will walk through web submission on https://dev.nceas.ucsb.edu/, and start 
+by logging in with an ORCID account. ORCID provides a common account for sharing
+scholarly data, so if you don't have one, you can create one when you are redirected
+to ORCID from the *Sign In* button.
+
+## Create and submit the data set
+
+After signing in, you can access the data submission form using the *Submit* button.
+Once on the form, start filling out the required metadata. Add your two files to the submission at the bottom, and set the access to public. When finished, click the *Submit Dataset Description* button at the bottom. Review your dataset, and finalize it's submission by clicking on the *Submit Dataset* button.
