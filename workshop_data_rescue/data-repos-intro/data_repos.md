@@ -1,11 +1,10 @@
-Data Management
+Data Management and Repositories
 ========================================================
 width: 1440
 height: 900
 font-family: 'Gill Sans', 'Source Sans Pro', 'Aller', 'Helvetica'
 css: ../course-overview/oss.css
 
-# And Data Repositories
 
 ![](images/Repos.png)
 
@@ -17,11 +16,15 @@ The Need for Data Management: Data Deluge
 ========================================================
 ![](images/Deluge.png)
 
-The Need for Data Management: Data Entropy
+Why Manage Data? Advancement of Science
 ========================================================
-<br>
-![](images/Entropy.png)
-
+- Data is a valuable asset – it is expensive and time consuming to collect 
+- Data should be managed to:
+  - maximize the effective use and value of data and information assets
+  - continually improve the quality including: data accuracy, integrity, integration, timeliness of data capture
+  - ensure appropriate use of data and information
+  - ensure sustainability and accessibility in long term for re-use in science
+  
 The Need for Data Management: Public Perception
 ========================================================
 
@@ -33,34 +36,22 @@ The Need for Data Management: Public Perception
 
 Why Manage Data? Researcher Perspective
 ========================================================
-- Keep yourself organized – be able to find your files (data inputs, analytic scripts, outputs at various stages of the analytic process, etc.) 
-- Track your science processes for reproducibility – be able to match up your outputs with exact inputs and transformations that produced them
-- Better control versions of data – easily identify versions that can be periodically purged
+- Keep yourself organized – be able to find your files
+- Track your science processes for reproducibility
 - Quality control your data more efficiently
 - To avoid data loss (e.g. making backups)
-- Format your data for re-use (by yourself or others)
-- Be prepared: Document your data for your own recollection, accountability, and re-use (by yourself or others) 
 - Gain credibility and recognition for your science efforts through data sharing!
 
-Why Manage Data? Advancement of Science
+The Need for Data Management: Data Entropy
 ========================================================
-- Data is a valuable asset – it is expensive and time consuming to collect 
-- Data should be managed to:
-  - maximize the effective use and value of data and information assets
-  - continually improve the quality including: data accuracy, integrity, integration, timeliness of data capture and presentation, relevance, and usefulness
-  - ensure appropriate use of data and information
-  - facilitate data sharing
-  - ensure sustainability and accessibility in long term for re-use in science
+![](images/Entropy.png)
+
+*Michener et al 1997; Vines et al 2014*
 
 The Data Life Cycle
 ========================================================
 <br>
 ![](images/DLC.png)
-
-The Data Life Cycle
-========================================================
-<br>
-![](images/DLCSynth.png)
 
 
 ========================================================
@@ -68,7 +59,7 @@ The Data Life Cycle
 ![](images/WhyManage.png)
 
 
-Barriers to Synthesis
+Barriers to Data Reuse
 ========================================================
 - Data not preserved
   - Tiny proportion of ecological data are readily available
@@ -81,17 +72,28 @@ Barriers to Synthesis
   
 Solutions
 ========================================================
-- Preserve data
+- **Preserve data**
 - Adopt standards
 - Create networks
 - Create interoperable software
 
 
-Data Repositories - Key Features
+Preserving Data
 ========================================================
 - Datasets are preserved with long-term commitment
 - Datasets are versioned and citeable
 - Datasets are searchable and discoverable
+
+What is a data repository?
+========================================================
+
+
+|System            |LongTerm |Versioned |Citable |Discoverable |
+|:-----------------|:--------|:---------|:-------|:------------|
+|Google Drive      |maybe    |maybe     |no      |no           |
+|GitHub            |yes      |yes       |no      |no           |
+|University Server |maybe    |no        |no      |maybe        |
+|KNB               |yes      |yes       |yes     |yes          |
 
 
 Data Repositories
@@ -116,5 +118,4 @@ Every community has ...
 - many metadata schemas
   - Biological Data Profile, Darwin Core, Dublin Core, <strong>Ecological Metadata Language (EML)</strong>, Open GIS schemas, ISO Schemas, ...
 
-Accepting this heterogeneity is critical
 
