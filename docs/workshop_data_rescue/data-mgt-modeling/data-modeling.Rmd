@@ -1,8 +1,16 @@
 ---
-title: "Data modeling"
+title: "Strucutring your Data for Reuse"
 time_slot: 40 minutes
-output: html_document
+output:
+  ioslides_presentation:
+    wide: "true"
+    logo: "images/NCEAS_logo_small.png"
 ---
+
+```{r echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
 
 # Data Modeling & Tidy Data
 
@@ -11,161 +19,252 @@ output: html_document
 - Understand basics of data models
 - Learn how to design and create effective data tables
 
-## Benefits of tidy data 
+## Benefits of normalized or "tidy" data {.build}
 
 - Powerful search and filtering
 - Handle large and/or complex data sets
 - Help to enforce data integrity
 - Easier to handle data updates
 
-. . . 
+*=> Easier to conduct your Analysis and even so for others!!*
 
-*=> Easier to conduct your Analysis!!*
+
+## Data Heterogeneity
+
+Data are heterogeneous in:
+
+>- _Structure_ (schema): Logical model of the data (e.g., tables, hierarchical trees, raster images, etc.)
+>- _Semantics_: Specific meaning of the data (e.g., nature and types of measurements, importance of contextual information, interpretation of record structure, etc.): documentation
+>- _Syntax_: Digital format of the data (e.g., csv, “R dataframe”, NetCDF, Excel XLSX, DBF, etc.)
+
+
+## Why Tabular Data?
+
+Spreadsheets are (still) the primary data entry tool of the digital age!
+
+```{r}
+knitr::include_graphics("images/spreadsheet-1.png")
+```
+
+
+## Spreadsheets
+
+### ![](images/theGood.png) the Good:
+
+- Quick on the draw (clickety-click and you’re ready for action)
+- Always there (on most everyone’s computer)
+- Smarter than he lets on (stats, pivot tables, VB scripts)
+- Cleans up real pretty (graphics, fonts, colors, borders)
+
+
+## Spreadsheets
+
+![](images/theBad.png) *the Bad*:
+
+- Also a fast shooter  (click&fire)
+- No scruples (delete row, click, ctrl-x/ctrl-c, re-sort, save)
+- Talks a good story, but unreliable (e.g. http://www.practicalstats.com/xlsstats/excelstats.html)
+
+
+## Spreadsheets
+
+![](images/theUgly.png) *the Ugly*:
+
+- Ill-mannered: takes your data prisoner; conflates raw data with summary data
+- Gaudy: Use of visual formatting to indicate critical metadata or other semantic tidbits
+- Shifty: Cross-linking of worksheets sets up “invisible” dependencies
+- The more complicated your Spreadsheet, the UGLIER it gets in terms of using it with other software
+
+
+## Spreadsheets
+
+*_=>  Encourages you to mix your data and your analaysis_*
+
 
 ## Data Organization
 
-![](images/excel-org-01.png)
+```{r out.width = "90%"}
+knitr::include_graphics("images/excel-org-01.png")
+```
+
 
 ## Multiple tables
 
-![](images/excel-org-02.png)
+```{r out.width = "90%"}
+knitr::include_graphics("images/excel-org-02.png")
+```
+
 
 ## Inconsistent observations
 
-![](images/excel-org-03.png)
+```{r out.width = "90%"}
+knitr::include_graphics("images/excel-org-03.png")
+```
+
 
 ## Inconsistent variables
 
-![](images/excel-org-04.png)
+```{r out.width = "90%"}
+knitr::include_graphics("images/excel-org-04.png")
+```
+
 
 ## Marginal sums and statistics
 
-![](images/excel-org-05.png)
+```{r out.width = "90%"}
+knitr::include_graphics("images/excel-org-05.png")
+```
 
-## Good enough data modeling
+*=>  A Spreadsheet is not a table !!*
 
-### Denormalized data
 
-- Observations about different entities combined
+# Good enough data modeling
 
-![](images/table-denorm.png)
-In the above example, each row has measurements about both the `site` at which observations
-occurred, as well as observations of two individuals of possibly different species
-found at that site.  This is *not normalized* data.
+## Terminological Soup
 
-People often refer to this as *wide* format, because the observatiions are spread across a
-wide number of columns.  Note that, should one encounter a new species in the survey, we
-wold have to add new columns to the table.  This is difficult to analyze, understand, and
-maintain.
+Table = Relation = Data set   (~ Worksheet) 
 
-### Tabular data
+Column = Variable = Attribute = Characteristic
 
-__Observations__. A better way to model data is to organize the observations about each type of entity
-in its own table.  This results in:
+Row = Record = Tuple  <> Observation
+
+Keys are used to Join or Merge
+
+Cell = Value = Measurement 
+
+Data Model = Schema
+
+
+## Denormalized data (aka non-tidy)
+
+Observations about different entities combined
+
+```{r out.width = "90%"}
+knitr::include_graphics("images/table-denorm.png")
+```
+
+<div class="notes">
+In the above example, each row has measurements about both the `site` at which observations occurred, as well as observations of two individuals of possibly different species found at that site.  This is *not normalized* data.
+
+People often refer to this as *wide* format, because the observations are spread across a wide number of columns.  Note that, should one encounter a new species in the survey, we wold have to add new columns to the table.  This is difficult to analyze, understand, and maintain.
+</div>
+
+## Tabular data
+
+__Observations__. A better way to model data is to organize the observations about each type of entity in its own table.  This results in:
 
 - Separate tables for each type of entity measured
 - Each row represents a single observed entity
 - Observations (rows) are all unique
 
-- This is *normalized* data (aka *tidy data*)
+__This is *normalized* data (aka *tidy data*)__
+
+
+## Tabular data
 
 __Variables__. In addition, for normalized data, we expect the variables to be organized such that:
 
 - All values in a column are of the same type
 - All columns pertain to the same observed entity (e.g., row)
 
+## Tabular data
+
+```{r out.width = "90%"}
+knitr::include_graphics("images/tables-norm.png")
+```
+
+<div class="notes">
 Here's an example of tidy (normalized) data in which the top table is the collection
 of observations about individuals of several species, and the bottom table are the
 observations containing properties of the sites at which the species occurred.
+</div>
 
-![](images/tables-norm.png)
-
-
-## Primary and Foreign Keys
+## How to relate tables?
 
 When one has normalized data, we often use unique identifiers to reference
 particular observations, which allows us to link across tables.  Two types of
 identifiers are common within relational data:
 
-- Primary Key: unique identifier for each observed entity, one per row
-- Foreign Key: reference to a primary key in another table (linkage)
+- _Primary Key_: unique identifier for each observed entity, one per row
+- _Foreign Key_: reference to a primary key in another table (linkage)
 
+
+## How to relate tables?
+
+```{r out.width = "90%"}
+knitr::include_graphics("images/tables-keys.png")
+```
+
+<div class="notes">
 For example, in the second table below, the `site` column is the *primary key* 
 of that table, because it uniquely identifies each row of the table as a unique
 observation of a site.  Inthe first table, however, the `site` column is a 
 *foreign key* that references the primary key from the second table.  This linkage
 tells us that the first height measurement for the `DAPU` observation occurred
 at the site with the name `Taku`.
+</div>
 
-![](images/tables-keys.png)
 
 ## Entity-Relationship Model (ER)
 
 An Entity-Relationship model allows us to compactly draw the structure of the
 tables in a relational database, including the primary and foreign keys in the tables.
 
-![](images/plotobs-diagram.png)
+```{r}
+knitr::include_graphics("images/plotobs-diagram.png")
+```
+
 In the above model, one can see that each site in the `SITES` table must have one
 or more observations in the `PLOTOBS` table, whereas each `PLOTOBS` has one and 
 only one `SITE`.
 
-## Merging data
-
-Frequently, analysis of data will require merging these separately managed tables
-back together.  There are multiple ways to join the observations in two tables, based
-on how the rows of one table are merged with the rows of the other.
-
-When conceptualizing merges, one can think of two tables, one on the *left* and
-one on the *right*. The most common (and often useful) join is when you merge the subset 
-of the rows from the left table with their matching rows from the right table: 
-this is called an *INNER JOIN*.  Other types of join are possible as well, including
-a *LEFT JOIN* and a *RIGHT JOIN*.  
-
-![](images/sql-joins-venn.png)
-In the figure above, the blue regions show the set of rows that are included in the result.
-For the INNER join, the rows returned are all rows in A that have a matching row in B.
 
 ## Simple Guidelines for Effective Data
 
 - Design to add rows, not columns
 - Each column one type
-- Eliminate redundancy
-- Uncorrected data file
 - Header line
 - Nonproprietary formats
 - Descriptive names
 - No spaces
 
-- [Borer et al. 2009. **Some Simple Guidelines for Effective Data Management.** Bulletin of the Ecological Society of America.](http://matt.magisa.org/pubs/borer-esa-2009.pdf)
 
-## Data modeling exercise
+## Semantic Ambiguity
 
-- Break into groups, 1 per table
+- Column headers: 
+   - Avoid cryptic names
+   - Concise, but not meaningful 
+   - Units (kg or g?) 
+- Color coding:
+   - avoid using formatting (implicit)
+   - add a column to store this information with a flag
 
-To demonstrate, we'll be working with a tidied up version of a dataset from ADF&G containing commercial catch data from 1878-1997.
-The dataset and reference to the original source can be viewed at its public archive: https://knb.ecoinformatics.org/#view/df35b.304.2.
-That site includes metadata describing the full data set, including column definitions.  Here's the first `catch` table:
+## Semantic Ambiguity
 
-```{r catch, cache=TRUE, echo=FALSE}
-library(DT)
-catch <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1", method = "libcurl"),
-                  stringsAsFactors = FALSE)
-datatable(catch)
+```{r}
+knitr::include_graphics("images/semantics-color.png")
 ```
 
-And here's the `region_defs` table:
-```{r regions, cache=TRUE, echo=FALSE}
-region_defs <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.303.1", method = "libcurl"),
-                        stringsAsFactors = FALSE)
-datatable(region_defs)
+## Semantic Ambiguity
+
+```{r}
+knitr::include_graphics("images/semantics-legend.png")
 ```
 
-- Draw an ER model for the tables
-  - Indicate the primary and foreign keys
+## Semantic Ambiguity
 
-![](images/ERD_Relationship_Symbols_Quick_Reference-1.png)
+```{r}
+knitr::include_graphics("images/semantics-good.png")
+```
 
-## Related resources
+## Semantic Ambiguity
+
+```{r}
+knitr::include_graphics("images/semantics-right.png")
+```
+
+
+## Ressources
 
 - [Borer et al. 2009. **Some Simple Guidelines for Effective Data Management.** Bulletin of the Ecological Society of America.](http://matt.magisa.org/pubs/borer-esa-2009.pdf)
 - [Software Carpentry SQL tutorial](https://swcarpentry.github.io/sql-novice-survey/)
