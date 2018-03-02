@@ -108,6 +108,7 @@ Data Repositories
 ![](images/Re3data.png) 
 
 
+Embracing Heterogeneity
 ========================================================
 
 Every community has ...
