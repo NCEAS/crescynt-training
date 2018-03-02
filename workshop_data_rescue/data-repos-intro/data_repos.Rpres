@@ -54,6 +54,7 @@ The Data Life Cycle
 ![](images/DLC.png)
 
 
+Data Reuse
 ========================================================
 <br>
 ![](images/WhyManage.png)
