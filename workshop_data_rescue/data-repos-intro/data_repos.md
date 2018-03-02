@@ -50,13 +50,13 @@ The Need for Data Management: Data Entropy
 
 The Data Life Cycle
 ========================================================
-<br>
+
 ![](images/DLC.png)
 
 
 Data Reuse
 ========================================================
-<br>
+
 ![](images/WhyManage.png)
 
 
