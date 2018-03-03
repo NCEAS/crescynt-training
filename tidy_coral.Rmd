@@ -90,7 +90,7 @@ d <- d_raw
 
 Let's look at the column headers. 
 ```{r, echo=FALSE}
-names(d_raw)
+names(d)
 ```
 
 We've got two rows of information about what the data represent. And actually, one of those rows is actually the column headers, and R thinks that the second is data. Let's clean up those names. But we don't want to lose either of those rows, because they both have important and unique information (measurement and units). 
@@ -169,9 +169,10 @@ d <- d %>%
          #hh_hr = as.numeric(hh_hr),
          #mm_mn = as.numeric(mm_mn))
 
-## pad zeros
+## pad zeros (add this after join attempt below)
 d <- d %>%
-  mutate()...
+  mutate(MM_mo = str_pad(MM_mo, 2, "left", pad = 0),
+         DD_dy = str_pad(DD_dy, 2, "left", pad = 0))
 
 ```
 
@@ -199,7 +200,7 @@ Series of CRAMP (Coral Reef Assessment Monitoring Program) data that includes KB
 2015. Hawaii Coral Reef Assessment and Monitoring Program (CRAMP): benthic data from digital still images made in 2008-2010 on Kauai, Oahu, Molokai, Maui, and Hawaii (NODC Accession 0104255). NOAA NCEI Oceanographic Data Archive. 
 
 We have to navigate to this and download it; I've saved it in the /data folder.
-```{r read_csv, message=FALSE}
+```{r read_csv benthic, message=FALSE}
 ben_raw <- read_csv(cramp_filepath)
 head(ben_raw) # much more straight-forward!
 ```
@@ -217,7 +218,7 @@ summary(benthic)
 ```
 
 Let's pull out a few columns that we'll be working with and go from there. 
-```{r janitor and skimr}
+```{r select benthic}
 benthic <- benthic %>%
   select(id_name, point, x, y, id_date)
 
@@ -261,7 +262,6 @@ head(benthic$date)
 
 There aren't zeros in the `d` object. Let's go back up to the date part of our analysis and add them.
 
+Hooray!
 
-## On your own
-
-1. Learn what the "X Data 1", 2 and 3 columns are and remove them if not necessary
+We've got a lot of observations; maybe we actually want to go back and summarize a bit before we join, or do some summaries now. What should we try next? It's up to you...
