@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Tidy Coral</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Tidy Coral</h1>
+
+</div>
+
+
+<p>Here we’re going to use what we learned yesterday on coral datasets.</p>
+<p>We’ll combine buoy data (temperature)</p>
+<p>We’ll also be using a few other packages that are super helpful: <code>stringr</code>, <code>janitor</code>, and <code>skimr</code>.</p>
+<p>We will do a bit together to get you started and then leave it to you to ask the questions you want to ask with these data.</p>
+<p>First off, let’s setup:</p>
+<pre class="r"><code>## libraries
+library(tidyverse)
+# library(magrittr) ## %&lt;&gt;%
+library(stringr)
+
+buoy_url &lt;- &#39;http://www.ndbc.noaa.gov/view_text_file.php?filename=mokh1h2008.txt.gz&amp;dir=data/historical/stdmet/&#39;
+
+#https://data.nodc.noaa.gov/cgi-bin/iso?id=gov.noaa.nodc:0117490</code></pre>
+<div id="buoy-data" class="section level2">
+<h2>Buoy data</h2>
+<div id="import" class="section level3">
+<h3>Import</h3>
+<p>While this is always the first step, it’s not always a straight-forward step. What functions should we use?</p>
+<p>Let’s also have a look in the Environment pane as we read in the data.</p>
+<pre class="r"><code>d &lt;- readr::read_csv(buoy_url)
+head(d) # hmm this doesn&#39;t look right! Why not?</code></pre>
+<pre><code>## # A tibble: 6 x 1
+##   `#YY  MM DD hh mm WDIR WSPD GST  WVHT   DPD   APD MWD   PRES  ATMP  WTMP  DEWP  VIS  TIDE`
+##                                                                                        &lt;chr&gt;
+## 1                #yr  mo dy hr mn degT m/s  m/s     m   sec   sec deg    hPa  degC  degC  de
+## 2                2008 06 25 19 54  75  5.1  6.8 99.00 99.00 99.00 999 9999.0  25.5 999.0 999
+## 3                2008 06 25 20 00  66  5.1  6.9 99.00 99.00 99.00 999 9999.0  25.4 999.0 999
+## 4                2008 06 25 20 06  61  5.3  8.0 99.00 99.00 99.00 999 9999.0  25.6 999.0 999
+## 5                2008 06 25 20 12 999 99.0 99.0 99.00 99.00 99.00 999 1018.8 999.0  26.6 999
+## 6                2008 06 25 20 18 999 99.0 99.0 99.00 99.00 99.00 999 1018.8 999.0  26.7 999</code></pre>
+<p>Why didn’t that install properly? Let’s have a look at the URL of the data. Ah right. It’s a .txt, not a .csv.</p>
+<p>OK. <code>readr</code> should have a function to read in .txt files. Let’s navigate to the help menu and have a look. In the bottom right RStudio pane, click on “Packages”. Type <code>readr</code> in the search menu, then click on its name. This will let you see all of the functions within the package.</p>
+<p>There are a lot of options, but let’s try <code>read_table</code>. It will return a dataframe.</p>
+<pre class="r"><code>## read_table
+d_raw &lt;- read_table(buoy_url)
+head(d) ## still not quite right -- missed some columns. </code></pre>
+<pre><code>## # A tibble: 6 x 1
+##   `#YY  MM DD hh mm WDIR WSPD GST  WVHT   DPD   APD MWD   PRES  ATMP  WTMP  DEWP  VIS  TIDE`
+##                                                                                        &lt;chr&gt;
+## 1                #yr  mo dy hr mn degT m/s  m/s     m   sec   sec deg    hPa  degC  degC  de
+## 2                2008 06 25 19 54  75  5.1  6.8 99.00 99.00 99.00 999 9999.0  25.5 999.0 999
+## 3                2008 06 25 20 00  66  5.1  6.9 99.00 99.00 99.00 999 9999.0  25.4 999.0 999
+## 4                2008 06 25 20 06  61  5.3  8.0 99.00 99.00 99.00 999 9999.0  25.6 999.0 999
+## 5                2008 06 25 20 12 999 99.0 99.0 99.00 99.00 99.00 999 1018.8 999.0  26.6 999
+## 6                2008 06 25 20 18 999 99.0 99.0 99.00 99.00 99.00 999 1018.8 999.0  26.7 999</code></pre>
+<pre class="r"><code>## read_table2
+d_raw &lt;- read_table2(buoy_url)
+head(d_raw) ## this is what we need!</code></pre>
+<pre><code>## # A tibble: 6 x 18
+##   `#YY`    MM    DD    hh    mm  WDIR  WSPD   GST  WVHT   DPD   APD   MWD
+##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+## 1   #yr    mo    dy    hr    mn  degT   m/s   m/s     m   sec   sec   deg
+## 2  2008    06    25    19    54    75   5.1   6.8 99.00 99.00 99.00   999
+## 3  2008    06    25    20    00    66   5.1   6.9 99.00 99.00 99.00   999
+## 4  2008    06    25    20    06    61   5.3   8.0 99.00 99.00 99.00   999
+## 5  2008    06    25    20    12   999  99.0  99.0 99.00 99.00 99.00   999
+## 6  2008    06    25    20    18   999  99.0  99.0 99.00 99.00 99.00   999
+## # ... with 6 more variables: PRES &lt;chr&gt;, ATMP &lt;chr&gt;, WTMP &lt;chr&gt;,
+## #   DEWP &lt;chr&gt;, VIS &lt;chr&gt;, TIDE &lt;chr&gt;</code></pre>
+<p>In creating this tutorial, I actually tried a few other options that didn’t work for various reasons. But cool to see them and why they didn’t work:</p>
+<pre class="r"><code>## this just wasn&#39;t the right approach
+d_test &lt;- read_delim(buoy_url, delim = &quot; &quot;, trim_ws = TRUE, skip=1)</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X2&#39; [2], &#39;X9&#39; [9], &#39;X11&#39; [11],
+## &#39;X12&#39; [12], &#39;X13&#39; [13], &#39;X14&#39; [14], &#39;X16&#39; [16], &#39;X17&#39; [17], &#39;X19&#39; [19],
+## &#39;X20&#39; [20], &#39;X23&#39; [23], &#39;X24&#39; [24], &#39;X25&#39; [25], &#39;X27&#39; [27], &#39;X29&#39; [29],
+## &#39;X31&#39; [31], &#39;X33&#39; [33], &#39;X35&#39; [35], &#39;X36&#39; [36], &#39;X37&#39; [37]</code></pre>
+<pre><code>## Warning: Duplicated column names deduplicated: &#39;m/s&#39; =&gt; &#39;m/s_1&#39; [10], &#39;sec&#39;
+## =&gt; &#39;sec_1&#39; [21], &#39;degC&#39; =&gt; &#39;degC_1&#39; [30], &#39;degC&#39; =&gt; &#39;degC_2&#39; [32]</code></pre>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
+## a multiple of vector length (arg 1)</code></pre>
+<pre><code>## Warning: 44823 parsing failures.
+## row # A tibble: 5 x 5 col     row   col   expected     actual expected   &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt; actual 1     1  &lt;NA&gt; 38 columns 22 columns file 2     2  &lt;NA&gt; 38 columns 22 columns row 3     3  &lt;NA&gt; 38 columns 22 columns col 4     4  &lt;NA&gt; 38 columns 19 columns expected 5     5  &lt;NA&gt; 38 columns 19 columns actual # ... with 1 more variables: file &lt;chr&gt;
+## ... ................. ... ................................... ........ ................................... ...... ................................... .... ................................... ... ................................... ... ................................... ........ ................................... ...... .......................................
+## See problems(...) for more details.</code></pre>
+<p>This involved way too many steps, and saving a temporary copy of the data (unideal!)</p>
+<pre class="r"><code>d_test &lt;- read_lines(buoy_url)
+y &lt;- d_test %&gt;%
+  as_data_frame() %&gt;%
+  mutate(value = str_replace_all(value, &#39; +&#39;, &#39;,&#39;)) 
+write_delim(y, &#39;data/buoy_local_copy.csv&#39;)
+
+z &lt;- read_csv(&#39;data/buoy_local_copy.csv&#39;, skip=1)
+## PRAISE BE</code></pre>
+<p>Cool. Nice that <code>read_table2</code> was designed to get the job done.</p>
+</div>
+<div id="copy-d_raw-as-a-new-variable" class="section level3">
+<h3>Copy <code>d_raw</code> as a new variable</h3>
+<p>We’ve got <code>d_raw</code> as the raw data we read from online. Let’s create a new variable called <code>d</code> that we’ll wrangle instead of that raw data (especially nice if you’ve got poor internet and don’t want to read it in each time!)</p>
+<pre class="r"><code>d &lt;- d_raw</code></pre>
+</div>
+<div id="column-headers" class="section level3">
+<h3>Column Headers</h3>
+<p>Let’s look at the column headers.</p>
+<pre><code>##  [1] &quot;#YY&quot;  &quot;MM&quot;   &quot;DD&quot;   &quot;hh&quot;   &quot;mm&quot;   &quot;WDIR&quot; &quot;WSPD&quot; &quot;GST&quot;  &quot;WVHT&quot; &quot;DPD&quot; 
+## [11] &quot;APD&quot;  &quot;MWD&quot;  &quot;PRES&quot; &quot;ATMP&quot; &quot;WTMP&quot; &quot;DEWP&quot; &quot;VIS&quot;  &quot;TIDE&quot;</code></pre>
+<p>We’ve got two rows of information about what the data represent. And actually, one of those rows is actually the column headers, and R thinks that the second is data. Let’s clean up those names. But we don’t want to lose either of those rows, because they both have important and unique information (measurement and units).</p>
+<p>So, let’s see if we can take that the first row of data (the units) and stick it on the with the column names (measurement). Then, we can get rid of that units row.</p>
+<p>In the <code>stringr</code> package, there is a way to combine strings using the <code>str_c</code> function. Let’s go back up to the setup and add <code>stringr</code> to the setup chunk and run it.</p>
+<p>There’s 3 things we want to do to these column names:</p>
+<ol style="list-style-type: decimal">
+<li>make the column header a combo of rows 1 and 2</li>
+<li>clean up the header; get rid of <code>#</code> and <code>/</code></li>
+<li>delete the now-redundant row 1</li>
+</ol>
+<pre class="r"><code>## 1. overwrite column names
+names(d) &lt;- str_c(names(d),                     ## first thing to combine
+                  d %&gt;% filter(`#YY` == &quot;#yr&quot;), ## second thing
+                  sep = &quot;_&quot;)                    ## separate these two things by this
+
+## inspect
+names(d) ## Looks a lot better</code></pre>
+<pre><code>##  [1] &quot;#YY_#yr&quot;   &quot;MM_mo&quot;     &quot;DD_dy&quot;     &quot;hh_hr&quot;     &quot;mm_mn&quot;    
+##  [6] &quot;WDIR_degT&quot; &quot;WSPD_m/s&quot;  &quot;GST_m/s&quot;   &quot;WVHT_m&quot;    &quot;DPD_sec&quot;  
+## [11] &quot;APD_sec&quot;   &quot;MWD_deg&quot;   &quot;PRES_hPa&quot;  &quot;ATMP_degC&quot; &quot;WTMP_degC&quot;
+## [16] &quot;DEWP_degC&quot; &quot;VIS_nmi&quot;   &quot;TIDE_ft&quot;</code></pre>
+<pre class="r"><code>## 2. clean up a bit more to get rid of the `#`s and the `/`s. 
+names(d) &lt;- str_replace_all(names(d), &quot;#&quot;, &quot;&quot;)  # let&#39;s just get rid of # all together (replace with &quot;&quot;)
+names(d) &lt;- str_replace_all(names(d), &quot;/&quot;, &quot;_&quot;) # but let&#39;s replace / with _
+
+## inspect to make sure it worked
+names(d)</code></pre>
+<pre><code>##  [1] &quot;YY_yr&quot;     &quot;MM_mo&quot;     &quot;DD_dy&quot;     &quot;hh_hr&quot;     &quot;mm_mn&quot;    
+##  [6] &quot;WDIR_degT&quot; &quot;WSPD_m_s&quot;  &quot;GST_m_s&quot;   &quot;WVHT_m&quot;    &quot;DPD_sec&quot;  
+## [11] &quot;APD_sec&quot;   &quot;MWD_deg&quot;   &quot;PRES_hPa&quot;  &quot;ATMP_degC&quot; &quot;WTMP_degC&quot;
+## [16] &quot;DEWP_degC&quot; &quot;VIS_nmi&quot;   &quot;TIDE_ft&quot;</code></pre>
+<p>Cool, that looks good enough for now!</p>
+<p>Now, let’s remove that first row that still displays the units. Note that since it is the first line, we could do this by deliberately saying line 1, but I don’t want to do that because I could easily and silently start deleting rows of data if I ran these lines over and over.</p>
+<pre class="r"><code>## inspect dimensions
+dim(d)</code></pre>
+<pre><code>## [1] 44824    18</code></pre>
+<pre class="r"><code>## 3. remove redundant row with units
+d &lt;- d %&gt;%
+  filter(YY_yr != &quot;#yr&quot;)
+
+## inspect again
+dim(d)</code></pre>
+<pre><code>## [1] 44823    18</code></pre>
+<pre class="r"><code>head(d)</code></pre>
+<pre><code>## # A tibble: 6 x 18
+##   YY_yr MM_mo DD_dy hh_hr mm_mn WDIR_degT WSPD_m_s GST_m_s WVHT_m DPD_sec
+##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;
+## 1  2008    06    25    19    54        75      5.1     6.8  99.00   99.00
+## 2  2008    06    25    20    00        66      5.1     6.9  99.00   99.00
+## 3  2008    06    25    20    06        61      5.3     8.0  99.00   99.00
+## 4  2008    06    25    20    12       999     99.0    99.0  99.00   99.00
+## 5  2008    06    25    20    18       999     99.0    99.0  99.00   99.00
+## 6  2008    06    25    20    24       999     99.0    99.0  99.00   99.00
+## # ... with 8 more variables: APD_sec &lt;chr&gt;, MWD_deg &lt;chr&gt;, PRES_hPa &lt;chr&gt;,
+## #   ATMP_degC &lt;chr&gt;, WTMP_degC &lt;chr&gt;, DEWP_degC &lt;chr&gt;, VIS_nmi &lt;chr&gt;,
+## #   TIDE_ft &lt;chr&gt;</code></pre>
+<pre class="r"><code>## and what would happen if we reran this? 
+d &lt;- d %&gt;%
+  filter(YY_yr != &quot;#yr&quot;)
+
+## inspect again -- no change!
+dim(d)</code></pre>
+<pre><code>## [1] 44823    18</code></pre>
+<pre class="r"><code>head(d)</code></pre>
+<pre><code>## # A tibble: 6 x 18
+##   YY_yr MM_mo DD_dy hh_hr mm_mn WDIR_degT WSPD_m_s GST_m_s WVHT_m DPD_sec
+##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;
+## 1  2008    06    25    19    54        75      5.1     6.8  99.00   99.00
+## 2  2008    06    25    20    00        66      5.1     6.9  99.00   99.00
+## 3  2008    06    25    20    06        61      5.3     8.0  99.00   99.00
+## 4  2008    06    25    20    12       999     99.0    99.0  99.00   99.00
+## 5  2008    06    25    20    18       999     99.0    99.0  99.00   99.00
+## 6  2008    06    25    20    24       999     99.0    99.0  99.00   99.00
+## # ... with 8 more variables: APD_sec &lt;chr&gt;, MWD_deg &lt;chr&gt;, PRES_hPa &lt;chr&gt;,
+## #   ATMP_degC &lt;chr&gt;, WTMP_degC &lt;chr&gt;, DEWP_degC &lt;chr&gt;, VIS_nmi &lt;chr&gt;,
+## #   TIDE_ft &lt;chr&gt;</code></pre>
+</div>
+<div id="next-steps" class="section level3">
+<h3>Next steps</h3>
+<p>What are some other things we could do to this data?</p>
+<ul>
+<li>all of these values are strings instead of numbers (because of that <code>#yr</code> row). We could change them so we can treat them as numbers (math) instead of words</li>
+<li>combine the date columns</li>
+<li>missing data: what does 99.0 mean? How about 999?</li>
+</ul>
+</div>
+<div id="format-dates" class="section level3">
+<h3>Format dates</h3>
+<p>Right now the dates are across several columns. Let’s combine them into dates.</p>
+<pre class="r"><code>## first change to numeric
+d &lt;- d %&gt;%
+  mutate(YY_yr = as.numeric(YY_yr), 
+         MM_mo = as.numeric(MM_mo), 
+         DD_dy = as.numeric(DD_dy))
+         #hh_hr = as.numeric(hh_hr),
+         #mm_mn = as.numeric(mm_mn))</code></pre>
+<pre class="r"><code>dtmp &lt;- d %&gt;%
+  unite(date, c(YY_yr, MM_mo, DD_dy), sep = &quot;-&quot;)</code></pre>
+<p>Great! Let’s leave this for a moment and read in some other data.</p>
+<p>Series of CRAMP (Coral Reef Assessment Monitoring Program) data that includes KBay coral survey still images and extracted data (with larger Hawaiian Islands context):</p>
+<pre class="r"><code># cramp &lt;- read_csv(&#39;data/Maalaea_Deep.csv&#39;)
+# head(cramp) # much more straight-forward!
+
+## TODO: Janitor
+
+## Let&#39;s have a look at the summary
+# skim(cramp)</code></pre>
+<p>What I see:</p>
+<ul>
+<li>there are some weird columns named “X Data 1”, 2 and 3 that are all missing. Probably some relic from Excel? Or might be worth inspection</li>
+<li>otherwise, data are pretty complete</li>
+<li>there are 9 unique species in this dataset</li>
+<li>X, Y coordinated do not look like they are lat/lon.</li>
+</ul>
+<p>Let’s check out which species are represented.</p>
+<pre class="r"><code># unique(cramp$Species)</code></pre>
+<p>Let’s say we want to look at these species compared to temperature. What could we join these datasets on?</p>
+</div>
+</div>
+<div id="on-your-own" class="section level2">
+<h2>On your own</h2>
+<ol style="list-style-type: decimal">
+<li>Learn what the “X Data 1”, 2 and 3 columns are and remove them if not necessary</li>
+</ol>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
