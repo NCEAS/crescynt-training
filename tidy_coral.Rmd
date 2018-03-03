@@ -17,10 +17,13 @@ First off, let's setup:
 ```{r setup, warning=FALSE, message=FALSE}
 ## libraries
 library(tidyverse)
-# library(magrittr) ## %<>%
 library(stringr)
+library(janitor) # install.packages('janitor')
 
-buoy_url <- 'http://www.ndbc.noaa.gov/view_text_file.php?filename=mokh1h2008.txt.gz&dir=data/historical/stdmet/'
+## buoy data url
+buoy_url <- 'http://www.ndbc.noaa.gov/view_text_file.php?filename=mokh1h2010.txt.gz&dir=data/historical/stdmet/'
+
+cramp_filepath <- 'data/100308OaAla03m.CSV'
 
 #https://data.nodc.noaa.gov/cgi-bin/iso?id=gov.noaa.nodc:0117490
 
@@ -165,48 +168,98 @@ d <- d %>%
          DD_dy = as.numeric(DD_dy))
          #hh_hr = as.numeric(hh_hr),
          #mm_mn = as.numeric(mm_mn))
+
+## pad zeros
+d <- d %>%
+  mutate()...
+
 ```
 
 
 ```{r unite}
-dtmp <- d %>%
+d <- d %>%
   unite(date, c(YY_yr, MM_mo, DD_dy), sep = "-")
 ```
 
-
-
 Great! Let's leave this for a moment and read in some other data. 
+
+## Benthic data
+
+and benthic data from digital stills 
+
+https://search.dataone.org/#view/{6A218D8B-05CD-49EA-AC13-FD0372B3B1D4}
+
+https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/
+https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd05/Oahu/OaHan/
+
+
 
 Series of CRAMP (Coral Reef Assessment Monitoring Program) data that includes KBay coral survey still images and extracted data (with larger Hawaiian Islands context):
 
+2015. Hawaii Coral Reef Assessment and Monitoring Program (CRAMP): benthic data from digital still images made in 2008-2010 on Kauai, Oahu, Molokai, Maui, and Hawaii (NODC Accession 0104255). NOAA NCEI Oceanographic Data Archive. 
 
-```{r read in cramp data}
-# cramp <- read_csv('data/Maalaea_Deep.csv')
-# head(cramp) # much more straight-forward!
-
-## TODO: Janitor
-
-## Let's have a look at the summary
-# skim(cramp)
+We have to navigate to this and download it; I've saved it in the /data folder.
+```{r read_csv, message=FALSE}
+ben_raw <- read_csv(cramp_filepath)
+head(ben_raw) # much more straight-forward!
 ```
 
-What I see: 
+There is a lot of columns that are all NA, but let's not worry about that right now. 
 
-- there are some weird columns named "X Data 1", 2 and 3 that are all missing. Probably some relic from Excel? Or might be worth inspection
-- otherwise, data are pretty complete
-- there are 9 unique species in this dataset
-- X, Y coordinated do not look like they are lat/lon.
+Let's use the janitor package to clean up the column headers. We can actually just create this new `benthic` object through our pipe here: 
+```{r janitor and skimr}
+## the `janitor` package's `clean_names` function
+benthic <- ben_raw %>%
+  janitor::clean_names()
+
+summary(benthic)
+# skim(benthic)
+```
+
+Let's pull out a few columns that we'll be working with and go from there. 
+```{r janitor and skimr}
+benthic <- benthic %>%
+  select(id_name, point, x, y, id_date)
+
+summary(benthic)
+# skim(benthic)
+```
 
 Let's check out which species are represented. 
 
-```{r cramp species}
-
-# unique(cramp$Species)
-
+```{r bentic species}
+unique(benthic$id_name)
 ```
 
 Let's say we want to look at these species compared to temperature. 
 What could we join these datasets on?
+
+Date. 
+
+Looks like we'll have to clean up the date column first
+
+```{r}
+benthic <- benthic %>%
+  mutate(date = str_remove_all(id_date, "#"))
+```
+
+Great!
+
+## Join datasets
+
+```{r}
+d_join <- benthic %>%
+  left_join(d, by = "date")
+```
+
+Why didn't it work? Have a look at the dates in each dataframe specifically: 
+
+```{r}
+head(d$date)
+head(benthic$date)
+```
+
+There aren't zeros in the `d` object. Let's go back up to the date part of our analysis and add them.
 
 
 ## On your own
