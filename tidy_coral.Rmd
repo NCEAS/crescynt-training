@@ -3,37 +3,115 @@ title: "Tidy Coral"
 output: html_document
 ---
 
-Here we're going to use what we learned yesterday on coral datasets. 
+## Introduction
 
-We'll combine buoy data (temperature)
+We are going to spend the morning beginning a tidy coral analysis that you will continue on your own in the afternoon. We'll be using what we learned in the [data-science-training](http://ohi-science.org/data-science-training/) but with real coral data from Oahu. 
 
-We'll also be using a few other packages that are super helpful: `stringr`, `janitor`, and `skimr`. 
+Our plan is to combine benthic observation data with buoy oceanographic data and explore patterns. 
 
+The benthic data comes from digital still images through the [Hawaii Coral Reef Assessment and Monitoring Program (CRAMP)](https://search.dataone.org/#view/{21548C09-57F9-449A-86B2-470A1DD4F0B5}), and the buoy data is from the [Kaneohe Bay NOAA buoy at Coconut Island (Station MOKH1)](http://www.ndbc.noaa.gov/station_history.php?station=mokh1).
 
-We will do a bit together to get you started and then leave it to you to ask the questions you want to ask with these data.
+We'll also be using a few new R packages that are super helpful: `stringr`, `janitor`, and `skimr`. 
 
-First off, let's setup: 
+## Setup
+
+First off, let's open up a GitHub repo we were working in yesterday, and start a new RMarkdown file. I'll call mine tidy_coral_analysis.Rmd. 
+
+I'll add a tiny bit of information to get us started, and you can fill in once you know more about what the analysis becomes: 
+
+> Exploratory analysis to combine benthic observation data with buoy oceanographic data.
+
+Then we'll add a setup chunk:
 
 ```{r setup, warning=FALSE, message=FALSE}
 ## libraries
 library(tidyverse)
 library(stringr)
 library(janitor) # install.packages('janitor')
+library(skimr) # install.packages('skimr')
 
-## buoy data url
+## data locations ---
+
+## benthic data
+benthic_filepath <- 'data/100308OaAla03m.CSV'
+
+## buoy data
 buoy_url <- 'http://www.ndbc.noaa.gov/view_text_file.php?filename=mokh1h2010.txt.gz&dir=data/historical/stdmet/'
-
-cramp_filepath <- 'data/100308OaAla03m.CSV'
-
-#https://data.nodc.noaa.gov/cgi-bin/iso?id=gov.noaa.nodc:0117490
-
 ```
+
+## Benthic data
+
+This is benthic data from a series of CRAMP (Coral Reef Assessment Monitoring Program) data that includes KBay coral survey still images and extracted data (with larger Hawaiian Islands context):
+
+[2015. Hawaii Coral Reef Assessment and Monitoring Program (CRAMP): benthic data from digital still images made in 2008-2010 on Kauai, Oahu, Molokai, Maui, and Hawaii (NODC Accession 0104255). NOAA NCEI Oceanographic Data Archive.](https://search.dataone.org/#view/{6A218D8B-05CD-49EA-AC13-FD0372B3B1D4}) 
+
+We have to navigate to [here](https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd05/Oahu/OaHan/) and download it; I've saved it in the /data folder.
+
+### Import
+
+```{r read_csv benthic, message=FALSE}
+benthic_raw <- read_csv(benthic_filepath)
+head(benthic_raw) 
+```
+
+There is a lot of columns that are all NA, but let's not worry about that right now. 
+
+### Wrangle
+
+Let's use the janitor package to clean up the column headers. We can actually just create this new `benthic` object through our pipe here: 
+```{r janitor and skimr}
+## the `janitor` package's `clean_names` function
+benthic <- benthic_raw %>%
+  janitor::clean_names()
+
+head(benthic)
+```
+`janitor::clean_names()` is such a useful function!
+
+Let's pull out a few columns that look useful for working with and go from there. 
+```{r select benthic}
+benthic <- benthic %>%
+  select(id_name, point, x, y, id_date)
+
+head(benthic)
+```
+Great. But let's have another look at those dates. There are some weird `#`s leading and trailing the dates that will surely cause trouble later, and they don't look good. So let's remove them. We can create another column called simply "date". 
+
+```{r}
+benthic <- benthic %>%
+  mutate(date = str_remove_all(id_date, "#"))
+```
+
+### Explore
+
+Now let's have a quick look at some summary stats:
+```{r skim benthic}
+summary(benthic)
+skimr::skim(benthic)
+```
+`skimr::skim()` lets us see quickly that there are 6 unique dates and 16 unique species. It will also make cool histograms of continueous data, although we won't focus on that at the moment. 
+
+Let's check out which species are represented. 
+
+```{r unique species}
+unique(benthic$id_name)
+```
+
+And let's just have a quick plot of species count by date: 
+
+```{r plot benthic}
+ggplot(benthic, aes(id_date, fill = id_name)) +
+         geom_bar()
+```
+OK so there would be a lot of ways we could improve this plot. But we just wanted a quick look. And this will help us frame our questions later. For example: 
+
+- why do total counts increase so much through time?
+
+Great! Let's leave this for a moment and read in the other data. 
 
 ## Buoy data
 
 ### Import
-
-While this is always the first step, it's not always a straight-forward step. What functions should we use? 
 
 Let's also have a look in the Environment pane as we read in the data.
 
@@ -42,7 +120,7 @@ d <- readr::read_csv(buoy_url)
 head(d) # hmm this doesn't look right! Why not?
 ```
 
-Why didn't that install properly? Let's have a look at the URL of the data. Ah right. It's a .txt, not a .csv. 
+Why didn't that import properly? Let's have a look at the URL of the data. Ah right. It's a .txt, not a .csv. 
 
 OK. `readr` should have a function to read in .txt files. Let's navigate to the help menu and have a look. In the bottom right RStudio pane, click on "Packages". Type `readr` in the search menu, then click on its name. This will let you see all of the functions within the package. 
 
@@ -182,56 +260,6 @@ d <- d %>%
   unite(date, c(YY_yr, MM_mo, DD_dy), sep = "-")
 ```
 
-Great! Let's leave this for a moment and read in some other data. 
-
-## Benthic data
-
-and benthic data from digital stills 
-
-https://search.dataone.org/#view/{6A218D8B-05CD-49EA-AC13-FD0372B3B1D4}
-
-https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/
-https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd05/Oahu/OaHan/
-
-
-
-Series of CRAMP (Coral Reef Assessment Monitoring Program) data that includes KBay coral survey still images and extracted data (with larger Hawaiian Islands context):
-
-2015. Hawaii Coral Reef Assessment and Monitoring Program (CRAMP): benthic data from digital still images made in 2008-2010 on Kauai, Oahu, Molokai, Maui, and Hawaii (NODC Accession 0104255). NOAA NCEI Oceanographic Data Archive. 
-
-We have to navigate to this and download it; I've saved it in the /data folder.
-```{r read_csv benthic, message=FALSE}
-ben_raw <- read_csv(cramp_filepath)
-head(ben_raw) # much more straight-forward!
-```
-
-There is a lot of columns that are all NA, but let's not worry about that right now. 
-
-Let's use the janitor package to clean up the column headers. We can actually just create this new `benthic` object through our pipe here: 
-```{r janitor and skimr}
-## the `janitor` package's `clean_names` function
-benthic <- ben_raw %>%
-  janitor::clean_names()
-
-summary(benthic)
-# skim(benthic)
-```
-
-Let's pull out a few columns that we'll be working with and go from there. 
-```{r select benthic}
-benthic <- benthic %>%
-  select(id_name, point, x, y, id_date)
-
-summary(benthic)
-# skim(benthic)
-```
-
-Let's check out which species are represented. 
-
-```{r bentic species}
-unique(benthic$id_name)
-```
-
 Let's say we want to look at these species compared to temperature. 
 What could we join these datasets on?
 
@@ -239,12 +267,6 @@ Date.
 
 Looks like we'll have to clean up the date column first
 
-```{r}
-benthic <- benthic %>%
-  mutate(date = str_remove_all(id_date, "#"))
-```
-
-Great!
 
 ## Join datasets
 
@@ -265,3 +287,20 @@ There aren't zeros in the `d` object. Let's go back up to the date part of our a
 Hooray!
 
 We've got a lot of observations; maybe we actually want to go back and summarize a bit before we join, or do some summaries now. What should we try next? It's up to you...
+
+## Your turn
+
+### Ideas: 
+
+#### Explore benthic data
+
+- what other ways could you visualize the data? What questions does bring up?
+
+
+#### Explore buoy data
+
+#### Explore joined data
+
+#### Explore beyond
+
+- Compare a different buoy and benthic pair?
