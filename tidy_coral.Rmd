@@ -77,6 +77,7 @@ head(benthic)
 ```
 Great. But let's have another look at those dates. There are some weird `#`s leading and trailing the dates that will surely cause trouble later, and they don't look good. So let's remove them. We can create another column called simply "date". 
 
+Let's go back up to the setup and add `stringr` to the setup chunk and run it. 
 ```{r}
 benthic <- benthic %>%
   mutate(date = str_remove_all(id_date, "#"))
@@ -116,8 +117,8 @@ Great! Let's leave this for a moment and read in the other data.
 Let's also have a look in the Environment pane as we read in the data.
 
 ```{r read_csv, message=FALSE}
-d <- readr::read_csv(buoy_url)
-head(d) # hmm this doesn't look right! Why not?
+buoy <- readr::read_csv(buoy_url)
+head(buoy) # hmm this doesn't look right! Why not?
 ```
 
 Why didn't that import properly? Let's have a look at the URL of the data. Ah right. It's a .txt, not a .csv. 
@@ -128,12 +129,12 @@ There are a lot of options, but let's try `read_table`. It will return a datafra
 
 ```{r read_table, message=FALSE}
 ## read_table
-d_raw <- read_table(buoy_url)
-head(d) ## still not quite right -- missed some columns. 
+buoy_raw <- read_table(buoy_url)
+head(buoy) ## still not quite right -- missed some columns. 
 
 ## read_table2
-d_raw <- read_table2(buoy_url)
-head(d_raw) ## this is what we need!
+buoy_raw <- read_table2(buoy_url)
+head(buoy_raw) ## this is what we need!
 ```
 
 In creating this tutorial, I actually tried a few other options that didn't work for various reasons. But cool to see them and why they didn't work:
@@ -157,25 +158,23 @@ z <- read_csv('data/buoy_local_copy.csv', skip=1)
 
 Cool. Nice that `read_table2` was designed to get the job done.
 
-### Copy `d_raw` as a new variable
+### Wrangle
 
-We've got `d_raw` as the raw data we read from online. Let's create a new variable called `d` that we'll wrangle instead of that raw data (especially nice if you've got poor internet and don't want to read it in each time!)
+We've got `buoy_raw` as the raw data we read from online. Let's create a new variable called `buoy` that we'll wrangle instead of that raw data (especially nice if you've got poor internet and don't want to read it in each time!)
 ```{r}
-d <- d_raw
+buoy <- buoy_raw
 ```
-
-### Column Headers
 
 Let's look at the column headers. 
 ```{r, echo=FALSE}
-names(d)
+names(buoy)
 ```
 
-We've got two rows of information about what the data represent. And actually, one of those rows is actually the column headers, and R thinks that the second is data. Let's clean up those names. But we don't want to lose either of those rows, because they both have important and unique information (measurement and units). 
+We've got two rows of information about what the data represent. R thinks that the first row are the column headers, and it considers the second row data. Let's clean up those names. But we don't want to lose either of those rows, because they both have important and unique information (measurement and units). 
 
 So, let's see if we can take that the first row of data (the units) and stick it on the with the column names (measurement). Then, we can get rid of that units row. 
 
-In the `stringr` package, there is a way to combine strings using the `str_c` function. Let's go back up to the setup and add `stringr` to the setup chunk and run it. 
+In the `stringr` package, there is a way to combine strings using the `str_c` function. 
 
 There's 3 things we want to do to these column names: 
 
@@ -185,20 +184,20 @@ There's 3 things we want to do to these column names:
 
 ```{r clean col names}
 ## 1. overwrite column names
-names(d) <- str_c(names(d),                     ## first thing to combine
-                  d %>% filter(`#YY` == "#yr"), ## second thing
-                  sep = "_")                    ## separate these two things by this
+names(buoy) <- str_c(names(buoy),                  ## first thing to combine
+                  buoy %>% filter(`#YY` == "#yr"), ## second thing
+                  sep = "_")                       ## separate by this
 
 ## inspect
-names(d) ## Looks a lot better
+names(buoy) ## Looks a lot better
 
 
 ## 2. clean up a bit more to get rid of the `#`s and the `/`s. 
-names(d) <- str_replace_all(names(d), "#", "")  # let's just get rid of # all together (replace with "")
-names(d) <- str_replace_all(names(d), "/", "_") # but let's replace / with _
+names(buoy) <- str_replace_all(names(buoy), "#", "")  # replace `#` with nothing (`""`)
+names(buoy) <- str_replace_all(names(buoy), "/", "_") # replace `/` with `_`
 
 ## inspect to make sure it worked
-names(d)
+names(buoy)
 ```
 
 Cool, that looks good enough for now!
@@ -207,82 +206,73 @@ Now, let's remove that first row that still displays the units. Note that since 
 
 ```{r}
 ## inspect dimensions
-dim(d)
+dim(buoy)
 
 ## 3. remove redundant row with units
-d <- d %>%
+buoy <- buoy %>%
   filter(YY_yr != "#yr")
 
 ## inspect again
-dim(d)
-head(d)
+dim(buoy)
+head(buoy)
 
 ## and what would happen if we reran this? 
-d <- d %>%
+buoy <- buoy %>%
   filter(YY_yr != "#yr")
 
 ## inspect again -- no change!
-dim(d)
-head(d)
+dim(buoy)
+head(buoy)
 ```
 
-### Next steps
+OK this is looking pretty good now.
 
-What are some other things we could do to this data? 
-
-- all of these values are strings instead of numbers (because of that `#yr` row). We could change them so we can treat them as numbers (math) instead of words
-- combine the date columns
-- missing data: what does 99.0 mean? How about 999?
-
-### Format dates
-
-Right now the dates are across several columns. Let's combine them into dates. 
-
-```{r change to numeric}
-## first change to numeric
-d <- d %>%
-  mutate(YY_yr = as.numeric(YY_yr), 
-         MM_mo = as.numeric(MM_mo), 
-         DD_dy = as.numeric(DD_dy))
-         #hh_hr = as.numeric(hh_hr),
-         #mm_mn = as.numeric(mm_mn))
-
-## pad zeros (add this after join attempt below)
-d <- d %>%
-  mutate(MM_mo = str_pad(MM_mo, 2, "left", pad = 0),
-         DD_dy = str_pad(DD_dy, 2, "left", pad = 0))
-
-```
-
-
-```{r unite}
-d <- d %>%
-  unite(date, c(YY_yr, MM_mo, DD_dy), sep = "-")
-```
-
-Let's say we want to look at these species compared to temperature. 
+Let's say we want to compare these temperatures to the benthic species from above.
 What could we join these datasets on?
 
 Date. 
 
-Looks like we'll have to clean up the date column first
+OK let's look at these dates — looks like we'll have to clean them up. Right now the dates are across several columns. Let's combine them into dates. 
+
+```{r change to numeric}
+## first change to numeric
+buoy <- buoy %>%
+  mutate(YY_yr = as.numeric(YY_yr), 
+         MM_mo = as.numeric(MM_mo), 
+         DD_dy = as.numeric(DD_dy))
+
+## pad zeros (add this after join attempt below)
+buoy <- buoy %>%
+  mutate(MM_mo = str_pad(MM_mo, 2, "left", pad = 0),
+         DD_dy = str_pad(DD_dy, 2, "left", pad = 0))
+```
+
+Now we unite the columns:
+```{r unite}
+buoy <- buoy %>%
+  unite(date, c(YY_yr, MM_mo, DD_dy), sep = "-")
+
+head(buoy)
+```
 
 
 ## Join datasets
 
+Great, let's join these datasets!
+
 ```{r}
 d_join <- benthic %>%
-  left_join(d, by = "date")
+  left_join(buoy, by = "date")
 ```
 
 Why didn't it work? Have a look at the dates in each dataframe specifically: 
 
 ```{r}
-head(d$date)
+head(buoy$date)
 head(benthic$date)
 ```
 
-There aren't zeros in the `d` object. Let's go back up to the date part of our analysis and add them.
+There aren't zeros in the `buoy` object. Let's go back up to the date part of our analysis and add them.
 
 Hooray!
 
@@ -299,7 +289,17 @@ We've got a lot of observations; maybe we actually want to go back and summarize
 
 #### Explore buoy data
 
+What are some other things we could do to this data? 
+
+- all of these values are strings instead of numbers (because of that `#yr` row). We could change them so we can treat them as numbers (math) instead of words
+- combine the date columns
+- missing data: what does 99.0 mean? How about 999?
+- what should you plot?
+
 #### Explore joined data
+
+- what variables should you compare? Temperature?
+- should you summarize species counts first?
 
 #### Explore beyond
 
