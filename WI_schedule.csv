@@ -1,7 +1,7 @@
 Time,Wed.03.07,Thu.03.08,Fri.03.09,Sat.03.10
 9:00 - 9:30,Welcome and Goals of the workshop (CRESCYNT),[Introduction to metadata - JC (NCEAS)](https://github.com/NCEAS/crescynt-training/blob/master/workshop_data_rescue/intro-to-metadata/Intro_to_metadata.pdf),Principles of open science - JB (NCEAS),Working with your data
 9:30 - 10:00,[Introduction to data respotitories - JC (NCEAS)](https://github.com/NCEAS/crescynt-training/blob/master/workshop_data_rescue/data-repos-intro/data_repos.md),[Introduction to metadata - JC (NCEAS)](https://github.com/NCEAS/crescynt-training/blob/master/workshop_data_rescue/intro-to-metadata/Intro_to_metadata.pdf),Working with your data,Working with your data
-10:00 - 10:30,Discussion: Data repositrory used within the Coral Reef community (CRESCYNT),Example: Metadata for transect photos -JB,Working with your data,Working with your data
+10:00 - 10:30,Discussion: Data repositrory used within the Coral Reef community (CRESCYNT),[Example: Metadata for transect photos](https://dev.nceas.ucsb.edu/#view/urn:uuid:bff7deff-804d-4a53-aed6-e22ccc3de290) -  JB (NCEAS),Working with your data,Working with your data
 10:30 - 11:00,Break,Break,Break,Break
 11:00 - 12:00,[Data management and tidy data](https://nceas.github.io/crescynt-training/workshop_data_rescue/data-mgt-modeling/data-modeling.html) - JB (NCEAS),[Exercise: Writing your own metadata - JC](https://github.com/NCEAS/crescynt-training/blob/master/workshop_data_rescue/data-submission-exercise/data_submission.Rmd),Working with your data,Working with your data
 12:00 - 01:00,Lunch,Lunch,Lunch,Lunch
