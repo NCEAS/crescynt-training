@@ -1,64 +1,57 @@
 ---
-title: "Data management"
-time_slot: "20min"
-output: slidy_presentation
-
+title: "Data Management"
+time_slot: 20min
+output:
+  ioslides_presentation:
+    wide: "true"
+    logo: "images/NCEAS_logo_small.png"
 ---
 
-
-## Why Manage your data?
-
-- Understand the needs and motivations behind data management planning
-
+```{r echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
 
 ## The Need for Data Management: Data Deluge
 
-![](images/Deluge.png)
+```{r}
+knitr::include_graphics("images/Deluge.png")
+```
 
-
-## The Need for Data Management: Data Entropy
-
-<br>
-![](images/Entropy.png)
-
-
-## The Need for Data Management: Public Perception
-
-![](images/ClimateGate.png)
-
-*"The climate scientists at the centre of a media storm over leaked emails were  cleared of accusations that they fudged their results and silenced critics, but a review found they had failed to be open enough about their work."*
 
 ## Benefits for Your Own Research
 
->- Keep yourself organized – be able to find your files 
->- Capture your science processes to make them reproducible
->- Better control versions of data – easily identify versions that can be periodically purged
->- Avoid data loss
->- Format your data for re-use
->- Document your data for your own recollection, accountability, and re-use
->- Gain credibility and rpecognition for your science efforts through data sharing!
+- Keep yourself organized
+- Avoid data loss
+- Better control versions of data
+- Format and document your data for your own recollection, accountability, and re-use
+- Gain credibility and recognition for your science efforts through data sharing!
+- Capture your science processes to make them reproducible
 
 
 ## Benefits for the Scientific Community
 
-- Data is a valuable asset – it is expensive and time consuming to collect 
+- Data is a valuable asset 
 - Data should be managed to:
-   - maximize the effective use and value of data and information assets
-   - continually improve the quality including: data accuracy, integrity, integration, timeliness of data capture and presentation, relevance, and usefulness
-   - ensure appropriate use of data and information
-   - facilitate data sharing 
-   - ensure sustainability and accessibility in long term for re-use in science
+  - Maximize the effective use and value of data
+  - Continually improve the quality (accuracy, integrity, integration,...) 
+  - Ensure appropriate use of data and information
+  - Facilitate data sharing 
+  - Ensure sustainability and accessibility in long term for re-use in science
 
 
 ## Data Life Cycle
 
 The data life cycle provides a high level overview of the stages involved in successful management and preservation of data for use and reuse.
 
-![Courtesy of DataONE](images/DLC.png) 
+```{r}
+knitr::include_graphics("images/DLC.png")
+```
+
 
 ## Data Management Plans (DMP)
 
 A data managment plan describes how you will manage your data during the lifetime of a reserach project.
+
 
 ## Why doing a DMP?
 
@@ -80,21 +73,24 @@ For any scientific project, it is good practice to prepare a data management pla
 
 Document and preserve your data when you are actively analyzing them! 
 
-![Adapted from Michener et al, 1997](images/michener97.png)
+```{r fig.cap = "Adapted from Michener et al, 1997"}
+knitr::include_graphics("images/DLC.png")
+```
 
-At this the time, it is the easiest for you to document and preserve your project’s data, because you know and understand the most about them. Then slowly, or more rapidly due to life events and technology shifts, what you know about the data declines.
+<div class="notes">
+At this time, it is the easiest for you to document and preserve your project’s data, because you know and understand the most about them. Then slowly, or more rapidly due to life events and technology shifts, what you know about the data declines.
+</div>
 
-## Document Soon, it is also for yourself
+
+## Document Soon, it is also for yourself {.build}
 
 You would not have to remember:
 
->- The name of that file?
->- The directory where you put it?
->- The units those measurements were taken in?
->- Which sample site was which?
->- Is it the cleaned version of the dataset used for publication?
-
-.  .  . 
+- The name of that file?
+- The directory where you put it?
+- The units those measurements were taken in?
+- Which sample site was which?
+- Is it the cleaned version of the dataset used for publication?
 
 => Easier to share with others, good for collaborations!
 
@@ -103,9 +99,9 @@ You would not have to remember:
 
 We mainly have beeing talking about data, but these rules apply to all the scientific processes and products genereated by a reasearch project, including:
 
->- Your scientific workflow
->- Your scripts developed to manipulate and analyse the data
->- The models the tools you used or developed
+- Your scientific workflow
+- Your scripts developed to manipulate and analyse the data
+- The models the tools you used or developed
 
 
 ## Resources used:
