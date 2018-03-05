@@ -12,6 +12,10 @@ The Need for Data Management: Big Data
 ========================================================
 ![](images/ClimateNews.png)
 
+Deta Deluge
+========================================================
+![](images/Deluge.png)
+
 
 Why Manage Data? Advancement of Science
 ========================================================
@@ -105,16 +109,5 @@ Data Repositories
 ![](images/Re3data.png) 
 
 
-Embracing Heterogeneity
-========================================================
-
-Every community has ...
-
-- many data schemas
-  - one for each project and person
-- many data formats
-  - ASCII, NetCDF, HDF, GeoTiff, ...
-- many metadata schemas
-  - Biological Data Profile, Darwin Core, Dublin Core, <strong>Ecological Metadata Language (EML)</strong>, Open GIS schemas, ISO Schemas, ...
 
 
