@@ -12,9 +12,6 @@ The Need for Data Management: Big Data
 ========================================================
 ![](images/ClimateNews.png)
 
-The Need for Data Management: Data Deluge
-========================================================
-![](images/Deluge.png)
 
 Why Manage Data? Advancement of Science
 ========================================================
