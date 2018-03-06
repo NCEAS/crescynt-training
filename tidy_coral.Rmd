@@ -101,7 +101,7 @@ unique(benthic$id_name)
 And let's just have a quick plot of species count by date: 
 
 ```{r plot benthic}
-ggplot(benthic, aes(id_date, fill = id_name)) +
+ggplot(benthic, aes(date, fill = id_name)) +
          geom_bar()
 ```
 OK so there would be a lot of ways we could improve this plot. But we just wanted a quick look. And this will help us frame our questions later. For example: 
@@ -131,11 +131,14 @@ There are a lot of options, but let's try `read_table`. It will return a datafra
 ## read_table
 buoy_raw <- read_table(buoy_url)
 head(buoy) ## still not quite right -- missed some columns. 
+```
 
+```{r}
 ## read_table2
 buoy_raw <- read_table2(buoy_url)
 head(buoy_raw) ## this is what we need!
 ```
+
 
 In creating this tutorial, I actually tried a few other options that didn't work for various reasons. But cool to see them and why they didn't work:
 
@@ -165,7 +168,7 @@ We've got `buoy_raw` as the raw data we read from online. Let's create a new var
 buoy <- buoy_raw
 ```
 
-Let's look at the column headers. 
+Let's look at the column headers.
 ```{r, echo=FALSE}
 names(buoy)
 ```
@@ -190,7 +193,9 @@ names(buoy) <- str_c(names(buoy),                  ## first thing to combine
 
 ## inspect
 names(buoy) ## Looks a lot better
+```
 
+```{r}
 
 ## 2. clean up a bit more to get rid of the `#`s and the `/`s. 
 names(buoy) <- str_replace_all(names(buoy), "#", "")  # replace `#` with nothing (`""`)
@@ -215,7 +220,9 @@ buoy <- buoy %>%
 ## inspect again
 dim(buoy)
 head(buoy)
+```
 
+```{r}
 ## and what would happen if we reran this? 
 buoy <- buoy %>%
   filter(YY_yr != "#yr")
@@ -234,20 +241,6 @@ Date.
 
 OK let's look at these dates — looks like we'll have to clean them up. Right now the dates are across several columns. Let's combine them into dates. 
 
-```{r change to numeric}
-## first change to numeric
-buoy <- buoy %>%
-  mutate(YY_yr = as.numeric(YY_yr), 
-         MM_mo = as.numeric(MM_mo), 
-         DD_dy = as.numeric(DD_dy))
-
-## pad zeros (add this after join attempt below)
-buoy <- buoy %>%
-  mutate(MM_mo = str_pad(MM_mo, 2, "left", pad = 0),
-         DD_dy = str_pad(DD_dy, 2, "left", pad = 0))
-```
-
-Now we unite the columns:
 ```{r unite}
 buoy <- buoy %>%
   unite(date, c(YY_yr, MM_mo, DD_dy), sep = "-")
@@ -260,23 +253,18 @@ head(buoy)
 
 Great, let's join these datasets!
 
+
 ```{r}
 d_join <- benthic %>%
   left_join(buoy, by = "date")
 ```
 
-Why didn't it work? Have a look at the dates in each dataframe specifically: 
+
+We've got a lot of observations, our joined dataframe has way more rows than both the buoy data and the benthic data! What happened? How do we fix it?
 
 ```{r}
-head(buoy$date)
-head(benthic$date)
+head(d_join[, c("id_name", "x", "y", "date", "hh_hr","mm_mn","WTMP_degC")])
 ```
-
-There aren't zeros in the `buoy` object. Let's go back up to the date part of our analysis and add them.
-
-Hooray!
-
-We've got a lot of observations; maybe we actually want to go back and summarize a bit before we join, or do some summaries now. What should we try next? It's up to you...
 
 ## Your turn
 
