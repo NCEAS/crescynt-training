@@ -101,7 +101,7 @@ unique(benthic$id_name)
 And let's just have a quick plot of species count by date: 
 
 ```{r plot benthic}
-ggplot(benthic, aes(id_date, fill = id_name)) +
+ggplot(benthic, aes(date, fill = id_name)) +
          geom_bar()
 ```
 OK so there would be a lot of ways we could improve this plot. But we just wanted a quick look. And this will help us frame our questions later. For example: 
@@ -165,7 +165,7 @@ We've got `buoy_raw` as the raw data we read from online. Let's create a new var
 buoy <- buoy_raw
 ```
 
-Let's look at the column headers. 
+Let's look at the column headers.
 ```{r, echo=FALSE}
 names(buoy)
 ```
@@ -190,7 +190,9 @@ names(buoy) <- str_c(names(buoy),                  ## first thing to combine
 
 ## inspect
 names(buoy) ## Looks a lot better
+```
 
+```{r}
 
 ## 2. clean up a bit more to get rid of the `#`s and the `/`s. 
 names(buoy) <- str_replace_all(names(buoy), "#", "")  # replace `#` with nothing (`""`)
@@ -215,6 +217,7 @@ buoy <- buoy %>%
 ## inspect again
 dim(buoy)
 head(buoy)
+```
 
 ## and what would happen if we reran this? 
 buoy <- buoy %>%
