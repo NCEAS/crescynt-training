@@ -3,8 +3,8 @@ title: "Managing and Structuring your Data"
 time_slot: 60 minutes
 output:
   ioslides_presentation:
-    wide: "true"
-    logo: "images/NCEAS_logo_small.png"
+    logo: images/NCEAS_logo_small.png
+    wide: 'true'
 ---
 
 ```{r echo = FALSE}
@@ -27,20 +27,23 @@ knitr::include_graphics("images/Deluge.png")
 - Keep yourself organized
 - Avoid data loss
 - Better control versions of data
-- Format and document your data for your own recollection, accountability, and re-use
+- For your own recollection, accountability, and re-use
 - Gain credibility and recognition for your science efforts through data sharing!
-- Capture your science processes to make them reproducible
 
 
 ## Benefits for the Scientific Community
 
-- Data is a valuable asset 
-- Data should be managed to:
-  - Maximize the effective use and value of data
-  - Continually improve the quality (accuracy, integrity, integration,...) 
-  - Ensure appropriate use of data and information
-  - Facilitate data sharing 
-  - Ensure sustainability and accessibility in long term for re-use in science
+### Data is a valuable asset!!
+
+<br>
+
+Data should be managed to:
+
+- Maximize the effective use and value of data
+- Continually improve the quality (accuracy, integrity, integration,...) 
+- Ensure appropriate use of data and information
+- Facilitate data sharing 
+- Ensure sustainability and accessibility in long term for re-use in science
 
 
 ## Data Life Cycle
@@ -54,16 +57,19 @@ knitr::include_graphics("images/DLC.png")
 
 ## Data Management Plans (DMP)
 
-A data management plan describes how you will manage your data during the lifetime of a research project.
+A data management plan describes how you will manage your data during the lifetime of a research project. The process of creating your DMP will force you to think about potential issues related to the project's data that could affect timeline, costs and personnel needed.
 
 
-## Why doing a DMP?
+## Data Management Plans (DMP)
 
-For any scientific project, it is good practice to prepare a data management plan (DMP). The process of creating your DMP will force you to think about potential issues related to the project's data that could affect timeline, costs and personnel needed.
+Goal: Answer these 4 questions:
 
->- It might be required by founding agency
->- It will help you in your project planning and resources allocations
->- It will help you to share and promote your work (Publications, Data citation, ...)
+1. How much data will be collected and how will it be treated?
+2. How much time is needed to manage the data and who will be responsible for doing so?
+3. How long should the data be preserved and where is the best location to do so?
+4. Are there any legal constraints associated with acquiring, using and sharing project data?
+
+*from  Recknagel and Michener. "Ecological Informatics", 2017*
 
 
 ## Don't loose your data
@@ -77,8 +83,8 @@ For any scientific project, it is good practice to prepare a data management pla
 
 Document and preserve your data when you are actively analyzing them! 
 
-```{r fig.cap = "Adapted from Michener et al, 1997"}
-knitr::include_graphics("images/DLC.png")
+```{r fig.cap = "Recknagel and Michener, 2017"}
+knitr::include_graphics("images/archiving-timeline.png")
 ```
 
 <div class="notes">
@@ -115,7 +121,10 @@ We mainly have being talking about data, but these rules apply to all the scient
 - Understand basics of data models
 - Learn how to design and create effective data tables
 
-## Benefits of normalized or "tidy" data {.build}
+
+## Benefits of normalized or "tidy" data 
+
+### Analitycal:
 
 - Powerful search and filtering
 - Handle large and/or complex data sets
@@ -123,6 +132,15 @@ We mainly have being talking about data, but these rules apply to all the scient
 - Easier to handle data updates
 
 *=> Easier to conduct your Analysis and even so for others!!*
+
+
+## Benefits of normalized or "tidy" data 
+
+### Preservation:
+
+- Easier to describe
+- Easier to automate metadata creation
+- Easier to implement Quality check
 
 
 ## Data Heterogeneity
@@ -245,6 +263,7 @@ In the above example, each row has measurements about both the `site` at which o
 People often refer to this as *wide* format, because the observations are spread across a wide number of columns.  Note that, should one encounter a new species in the survey, we wold have to add new columns to the table.  This is difficult to analyze, understand, and maintain.
 </div>
 
+
 ## Tabular data
 
 __Observations__. A better way to model data is to organize the observations about each type of entity in its own table.  This results in:
@@ -265,7 +284,7 @@ __Variables__. In addition, for normalized data, we expect the variables to be o
 
 ## Tabular data
 
-```{r out.width = "90%"}
+```{r }
 knitr::include_graphics("images/tables-norm.png")
 ```
 
@@ -287,7 +306,7 @@ identifiers are common within relational data:
 
 ## How to relate tables?
 
-```{r out.width = "90%"}
+```{r}
 knitr::include_graphics("images/tables-keys.png")
 ```
 
