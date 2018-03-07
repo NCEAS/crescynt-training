@@ -11,9 +11,6 @@ Instructors:
 - Jeanette Clark
 - Julie Lowndes 
 
-**WIFI**: NCEAS network. Password: `thenceaswirelesspassword`  
-**Bathroom code**: 1125
-
 
 <div>
   <p><br /></p>
