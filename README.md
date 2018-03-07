@@ -1,16 +1,17 @@
-# CRESCYNT - NCEAS  training
+# WELCOME
 
-<br>
-<img src="images/sb_banner.jpg">
-<br>
-<br></br>
-
-CORAL REEF SCIENCE & CYBERINFRASTRUCTURE NETWORK (CRESCYNT) - NCEAS training material for data rescue and data integration workshops 2018.
-
-- [Data Rescue Workshop Announcement](https://crescyntblog.org/2017/12/22/crescynt-workshop-1-data-rescue/)
-- [Data Integration Workshop Announcement](https://crescyntblog.org/2017/12/22/crescynt-workshop-2-data-integration-and-team-science/)
+**CRESCYNT - NCEAS  training**
 
 ### Main website for the workshop: https://nceas.github.io/crescynt-training/
+
+Instructors: 
+
+- Julien Brun
+- Jeanette Clark
+- Julie Lowndes 
+
+**WIFI**: NCEAS network. Password: `thenceaswirelesspassword`
+**Bathroom code**: 1125
 
 
 <div>
