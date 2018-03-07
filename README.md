@@ -6,11 +6,12 @@
 
 Instructors: 
 
+- Ouida Meier
 - Julien Brun
 - Jeanette Clark
 - Julie Lowndes 
 
-**WIFI**: NCEAS network. Password: `thenceaswirelesspassword`
+**WIFI**: NCEAS network. Password: `thenceaswirelesspassword`  
 **Bathroom code**: 1125
 
 
