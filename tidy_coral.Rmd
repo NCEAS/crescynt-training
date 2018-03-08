@@ -1,25 +1,34 @@
 ---
 title: "Tidy Coral"
-output: html_document
+author: Julie Lowndes and Jeanette Clark
+output:
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
-## Introduction
+## Overview
 
-We are going to spend the morning beginning a tidy coral analysis that you will continue on your own in the afternoon. We'll be using what we learned in the [data-science-training](http://ohi-science.org/data-science-training/) but with real coral data from Oahu. 
+We are going to begin a tidy coral analysis that you will continue on your own. We'll be using what we learned in the [data-science-training](http://ohi-science.org/data-science-training/) but with real coral data from Oahu. 
 
-Our plan is to combine benthic observation data with buoy oceanographic data and explore patterns. 
+Our plan is to combine benthic observation data with oceanographic buoy data and explore patterns. 
 
 The benthic data comes from digital still images through the [Hawaii Coral Reef Assessment and Monitoring Program (CRAMP)](https://search.dataone.org/#view/{21548C09-57F9-449A-86B2-470A1DD4F0B5}), and the buoy data is from the [Kaneohe Bay NOAA buoy at Coconut Island (Station MOKH1)](http://www.ndbc.noaa.gov/station_history.php?station=mokh1).
 
 We'll also be using a few new R packages that are super helpful: `stringr`, `janitor`, and `skimr`. 
 
+**Objectives**
+
+- put your data wrangling skills to practice
+- read in two real datasets relevant to coral
+- join these two datasets together
+- learn that this is an iterative process and requires a lot of decisionmaking
+
 ## Setup
 
 First off, let's open up a GitHub repo we were working in yesterday, and start a new RMarkdown file. I'll call mine tidy_coral_analysis.Rmd. 
 
-I'll add a tiny bit of information to get us started, and you can fill in once you know more about what the analysis becomes: 
-
-> Exploratory analysis to combine benthic observation data with buoy oceanographic data.
+I'll add a tiny bit of information to get us started, and you can fill in once you know more about what the analysis becomes: "Exploratory analysis to combine benthic observation data with oceanographic buoy data."
 
 Then we'll add a setup chunk:
 
@@ -30,7 +39,7 @@ library(stringr)
 library(janitor) # install.packages('janitor')
 library(skimr) # install.packages('skimr')
 
-## data locations ---
+## data filepaths/urls ----
 
 ## benthic data
 benthic_filepath <- 'data/100308OaAla03m.CSV'
