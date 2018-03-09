@@ -1,0 +1,14 @@
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+library(tidyverse)
+library(googlesheets) # install.packages('googlesheets')
+library(knitr)
+
+
+# Read the csv in
+gs <-read.csv("participants_w1.csv")
+
+knitr::kable(gs)
+
+```
+
