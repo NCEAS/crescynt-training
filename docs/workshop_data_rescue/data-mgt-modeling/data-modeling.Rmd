@@ -1,5 +1,5 @@
 ---
-title: "Managing and Structuring your Data"
+title: "Managing and Structuring your Data for Preservation"
 time_slot: 60 minutes
 output:
   ioslides_presentation:
@@ -15,27 +15,7 @@ knitr::opts_chunk$set(echo = FALSE)
 # Managing your data
 
 
-## The Need for Data Management: Data Deluge 
-
-```{r fig.align="center"}
-knitr::include_graphics("images/Deluge.png")
-```
-
-
-## Benefits for Your Own Research
-
-- Keep yourself organized
-- Avoid data loss
-- Better control versions of data
-- For your own recollection, accountability, and re-use
-- Gain credibility and recognition for your science efforts through data sharing!
-
-
-## Benefits for the Scientific Community
-
-### Data is a valuable asset!!
-
-<br>
+## Data is a valuable asset!!
 
 Data should be managed to:
 
