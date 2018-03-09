@@ -9,6 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Julie Lowndes and Jeanette Clark" />
 
 
 <title>Tidy Coral</title>
@@ -19,6 +20,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -111,6 +115,101 @@ $(document).ready(function () {
 
 
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
 
 
 <div class="fluid-row" id="header">
@@ -118,32 +217,37 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Tidy Coral</h1>
+<h4 class="author"><em>Julie Lowndes and Jeanette Clark</em></h4>
 
 </div>
 
 
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
-<p>We are going to spend the morning beginning a tidy coral analysis that you will continue on your own in the afternoon. We’ll be using what we learned in the <a href="http://ohi-science.org/data-science-training/">data-science-training</a> but with real coral data from Oahu.</p>
-<p>Our plan is to combine benthic observation data with buoy oceanographic data and explore patterns.</p>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>We are going to begin a tidy coral analysis that you will continue on your own. We’ll be using what we learned in the <a href="http://ohi-science.org/data-science-training/">data-science-training</a> but with real coral data from Oahu.</p>
+<p>Our plan is to combine benthic observation data with oceanographic buoy data and explore patterns.</p>
 <p>The benthic data comes from digital still images through the <a href="https://search.dataone.org/#view/%7B21548C09-57F9-449A-86B2-470A1DD4F0B5%7D">Hawaii Coral Reef Assessment and Monitoring Program (CRAMP)</a>, and the buoy data is from the <a href="http://www.ndbc.noaa.gov/station_history.php?station=mokh1">Kaneohe Bay NOAA buoy at Coconut Island (Station MOKH1)</a>.</p>
 <p>We’ll also be using a few new R packages that are super helpful: <code>stringr</code>, <code>janitor</code>, and <code>skimr</code>.</p>
+<p><strong>Objectives</strong></p>
+<ul>
+<li>put your data wrangling skills to practice</li>
+<li>read in two real datasets relevant to coral</li>
+<li>join these two datasets together</li>
+<li>learn that this is an iterative process and requires a lot of decisionmaking</li>
+</ul>
 </div>
 <div id="setup" class="section level2">
 <h2>Setup</h2>
 <p>First off, let’s open up a GitHub repo we were working in yesterday, and start a new RMarkdown file. I’ll call mine tidy_coral_analysis.Rmd.</p>
-<p>I’ll add a tiny bit of information to get us started, and you can fill in once you know more about what the analysis becomes:</p>
-<blockquote>
-<p>Exploratory analysis to combine benthic observation data with buoy oceanographic data.</p>
-</blockquote>
+<p>I’ll add a tiny bit of information to get us started, and you can fill in once you know more about what the analysis becomes: “Exploratory analysis to combine benthic observation data with oceanographic buoy data.”</p>
 <p>Then we’ll add a setup chunk:</p>
 <pre class="r"><code>## libraries
 library(tidyverse)
-library(stringr)
 library(janitor) # install.packages(&#39;janitor&#39;)
 library(skimr) # install.packages(&#39;skimr&#39;)
+library(stringr) # added when we needed it for benthic data
 
-## data locations ---
+## data filepaths/urls ----
 
 ## benthic data
 benthic_filepath &lt;- &#39;data/100308OaAla03m.CSV&#39;
@@ -153,88 +257,55 @@ buoy_url &lt;- &#39;http://www.ndbc.noaa.gov/view_text_file.php?filename=mokh1h2
 </div>
 <div id="benthic-data" class="section level2">
 <h2>Benthic data</h2>
-<p>This is benthic data from a series of CRAMP (Coral Reef Assessment Monitoring Program) data that includes KBay coral survey still images and extracted data (with larger Hawaiian Islands context):</p>
+<p>This is benthic data from a series of CRAMP (Coral Reef Assessment Monitoring Program) data that includes Kaneohe Bay coral survey still images and extracted data (with larger Hawaiian Islands context):</p>
 <p><a href="https://search.dataone.org/#view/%7B6A218D8B-05CD-49EA-AC13-FD0372B3B1D4%7D">2015. Hawaii Coral Reef Assessment and Monitoring Program (CRAMP): benthic data from digital still images made in 2008-2010 on Kauai, Oahu, Molokai, Maui, and Hawaii (NODC Accession 0104255). NOAA NCEI Oceanographic Data Archive.</a></p>
 <p>We have to navigate to <a href="https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd05/Oahu/OaHan/">here</a> and download it; I’ve saved it in the /data folder.</p>
-<div id="import" class="section level3">
-<h3>Import</h3>
+<div id="import-from-a-local-file" class="section level3">
+<h3>Import from a local file</h3>
+<p>Let’s import and have a look with <code>head()</code> and the Environment pane.</p>
 <pre class="r"><code>benthic_raw &lt;- read_csv(benthic_filepath)
 head(benthic_raw) </code></pre>
-<pre><code>## # A tibble: 6 x 25
-##   `Site Name` Station `Frame No.` `Image Date` `ID Name`   `ID Code` Point
-##   &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;     &lt;int&gt;
-## 1 &lt;NA&gt;        &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;         Pocillopor… &lt;NA&gt;          1
-## 2 &lt;NA&gt;        &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;         Turf algae  &lt;NA&gt;          2
-## 3 &lt;NA&gt;        &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;         Coralline … &lt;NA&gt;          3
-## 4 &lt;NA&gt;        &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;         Coralline … &lt;NA&gt;          4
-## 5 &lt;NA&gt;        &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;         Coralline … &lt;NA&gt;          5
-## 6 &lt;NA&gt;        &lt;NA&gt;    &lt;NA&gt;        &lt;NA&gt;         Turf algae  &lt;NA&gt;          6
-## # ... with 18 more variables: X &lt;int&gt;, Y &lt;int&gt;, Intensity &lt;chr&gt;,
-## #   Red &lt;chr&gt;, Green &lt;chr&gt;, Blue &lt;chr&gt;, `File Name` &lt;chr&gt;, `Total
-## #   Points` &lt;int&gt;, `ID Date` &lt;chr&gt;, `Site ID` &lt;chr&gt;, `Site Code` &lt;chr&gt;,
-## #   `Time Code` &lt;chr&gt;, Institution &lt;chr&gt;, `User Name` &lt;chr&gt;,
-## #   Habitat &lt;chr&gt;, WQS &lt;chr&gt;, Length &lt;chr&gt;, Depth &lt;chr&gt;</code></pre>
 <p>There is a lot of columns that are all NA, but let’s not worry about that right now.</p>
 </div>
 <div id="wrangle" class="section level3">
 <h3>Wrangle</h3>
-<p>Let’s use the janitor package to clean up the column headers. We can actually just create this new <code>benthic</code> object through our pipe here:</p>
+<p>Let’s use the janitor package to clean up the column headers. Let’s create a new <code>benthic</code> object with a pipe:</p>
 <pre class="r"><code>## the `janitor` package&#39;s `clean_names` function
 benthic &lt;- benthic_raw %&gt;%
   janitor::clean_names()
 
-head(benthic)</code></pre>
-<pre><code>## # A tibble: 6 x 25
-##   site_name station frame_no image_date id_name  id_code point     x     y
-##   &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;    &lt;chr&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-## 1 &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;       Pocillo… &lt;NA&gt;        1  1773  1000
-## 2 &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;       Turf al… &lt;NA&gt;        2  2308   194
-## 3 &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;       Coralli… &lt;NA&gt;        3  1700  1782
-## 4 &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;       Coralli… &lt;NA&gt;        4  2470   584
-## 5 &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;       Coralli… &lt;NA&gt;        5   314  1145
-## 6 &lt;NA&gt;      &lt;NA&gt;    &lt;NA&gt;     &lt;NA&gt;       Turf al… &lt;NA&gt;        6   198  1660
-## # ... with 16 more variables: intensity &lt;chr&gt;, red &lt;chr&gt;, green &lt;chr&gt;,
-## #   blue &lt;chr&gt;, file_name &lt;chr&gt;, total_points &lt;int&gt;, id_date &lt;chr&gt;,
-## #   site_id &lt;chr&gt;, site_code &lt;chr&gt;, time_code &lt;chr&gt;, institution &lt;chr&gt;,
-## #   user_name &lt;chr&gt;, habitat &lt;chr&gt;, wqs &lt;chr&gt;, length &lt;chr&gt;, depth &lt;chr&gt;</code></pre>
-<p><code>janitor::clean_names()</code> is such a useful function!</p>
+names(benthic)</code></pre>
+<pre><code>##  [1] &quot;site_name&quot;    &quot;station&quot;      &quot;frame_no&quot;     &quot;image_date&quot;  
+##  [5] &quot;id_name&quot;      &quot;id_code&quot;      &quot;point&quot;        &quot;x&quot;           
+##  [9] &quot;y&quot;            &quot;intensity&quot;    &quot;red&quot;          &quot;green&quot;       
+## [13] &quot;blue&quot;         &quot;file_name&quot;    &quot;total_points&quot; &quot;id_date&quot;     
+## [17] &quot;site_id&quot;      &quot;site_code&quot;    &quot;time_code&quot;    &quot;institution&quot; 
+## [21] &quot;user_name&quot;    &quot;habitat&quot;      &quot;wqs&quot;          &quot;length&quot;      
+## [25] &quot;depth&quot;</code></pre>
+<p><code>janitor::clean_names()</code> is such a useful function for taking messy column headers and cleaning them up!</p>
 <p>Let’s pull out a few columns that look useful for working with and go from there.</p>
 <pre class="r"><code>benthic &lt;- benthic %&gt;%
   select(id_name, point, x, y, id_date)
 
 head(benthic)</code></pre>
 <pre><code>## # A tibble: 6 x 5
-##   id_name               point     x     y id_date     
-##   &lt;chr&gt;                 &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;       
+##                 id_name point     x     y      id_date
+##                   &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;        &lt;chr&gt;
 ## 1 Pocillopora meandrina     1  1773  1000 #2010-03-12#
-## 2 Turf algae                2  2308   194 #2010-03-12#
-## 3 Coralline algae           3  1700  1782 #2010-03-12#
-## 4 Coralline algae           4  2470   584 #2010-03-12#
-## 5 Coralline algae           5   314  1145 #2010-03-12#
-## 6 Turf algae                6   198  1660 #2010-03-12#</code></pre>
+## 2            Turf algae     2  2308   194 #2010-03-12#
+## 3       Coralline algae     3  1700  1782 #2010-03-12#
+## 4       Coralline algae     4  2470   584 #2010-03-12#
+## 5       Coralline algae     5   314  1145 #2010-03-12#
+## 6            Turf algae     6   198  1660 #2010-03-12#</code></pre>
 <p>Great. But let’s have another look at those dates. There are some weird <code>#</code>s leading and trailing the dates that will surely cause trouble later, and they don’t look good. So let’s remove them. We can create another column called simply “date”.</p>
-<p>Let’s go back up to the setup and add <code>stringr</code> to the setup chunk and run it.</p>
+<p>Let’s go back up to the setup and add <code>library(stringr)</code> to the setup chunk and run it.</p>
 <pre class="r"><code>benthic &lt;- benthic %&gt;%
-  mutate(date = str_remove_all(id_date, &quot;#&quot;))</code></pre>
+  mutate(date = stringr::str_remove_all(id_date, &quot;#&quot;))</code></pre>
 </div>
 <div id="explore" class="section level3">
 <h3>Explore</h3>
 <p>Now let’s have a quick look at some summary stats:</p>
 <pre class="r"><code>summary(benthic)</code></pre>
-<pre><code>##    id_name              point          x              y         
-##  Length:4925        Min.   : 1   Min.   :   1   Min.   :   1.0  
-##  Class :character   1st Qu.: 7   1st Qu.: 627   1st Qu.: 489.0  
-##  Mode  :character   Median :13   Median :1266   Median : 958.0  
-##                     Mean   :13   Mean   :1271   Mean   : 963.8  
-##                     3rd Qu.:19   3rd Qu.:1918   3rd Qu.:1434.0  
-##                     Max.   :25   Max.   :2560   Max.   :1920.0  
-##    id_date              date          
-##  Length:4925        Length:4925       
-##  Class :character   Class :character  
-##  Mode  :character   Mode  :character  
-##                                       
-##                                       
-## </code></pre>
 <pre class="r"><code>skimr::skim(benthic)</code></pre>
 <pre><code>## Skim summary statistics
 ##  n obs: 4925 
@@ -266,267 +337,225 @@ head(benthic)</code></pre>
 ## [11] &quot;Pavona varians&quot;        &quot;Other&quot;                
 ## [13] &quot;Palythoa tuberculosa&quot;  &quot;Pavona maldivensis&quot;   
 ## [15] &quot;Pavona duerdeni&quot;       &quot;Porites lichen&quot;</code></pre>
-<p>And let’s just have a quick plot of species count by date:</p>
+<p>And to get a sense of our data let’s just have a quick plot of species count by date:</p>
 <pre class="r"><code>ggplot(benthic, aes(date, fill = id_name)) +
          geom_bar()</code></pre>
-<p><img src="tidy_coral_files/figure-html/plot%20benthic-1.png" width="672" /> OK so there would be a lot of ways we could improve this plot. But we just wanted a quick look. And this will help us frame our questions later. For example:</p>
+<p><img src="tidy_coral_files/figure-html/plot%20benthic-1.png" width="672" /></p>
+<p>OK so there would be a lot of ways we could improve this plot (starting with color and how it is grouped!). But we just wanted a quick look. And this could help us frame our scientific questions later on. For example:</p>
 <ul>
 <li>why do total counts increase so much through time?</li>
+<li>…</li>
 </ul>
 <p>Great! Let’s leave this for a moment and read in the other data.</p>
 </div>
 </div>
 <div id="buoy-data" class="section level2">
 <h2>Buoy data</h2>
-<div id="import-1" class="section level3">
-<h3>Import</h3>
+<div id="import-from-a-url" class="section level3">
+<h3>Import from a url</h3>
 <p>Let’s also have a look in the Environment pane as we read in the data.</p>
 <pre class="r"><code>buoy &lt;- readr::read_csv(buoy_url)
 head(buoy) # hmm this doesn&#39;t look right! Why not?</code></pre>
-<pre><code>## # A tibble: 6 x 1
-##   `#YY  MM DD hh mm WDIR WSPD GST  WVHT   DPD   APD MWD   PRES  ATMP  WTM…
-##   &lt;chr&gt;                                                                   
-## 1 #yr  mo dy hr mn degT m/s  m/s     m   sec   sec deg    hPa  degC  degC…
-## 2 2010 01 01 00 00 999 99.0 99.0 99.00 99.00 99.00 999 1012.4 999.0  25.4…
-## 3 2010 01 01 00 06 999 99.0 99.0 99.00 99.00 99.00 999 1012.4 999.0  25.4…
-## 4 2010 01 01 00 12 999 99.0 99.0 99.00 99.00 99.00 999 1012.2 999.0  25.4…
-## 5 2010 01 01 00 18 999 99.0 99.0 99.00 99.00 99.00 999 1012.2 999.0  25.4…
-## 6 2010 01 01 00 24 999 99.0 99.0 99.00 99.00 99.00 999 1012.1 999.0  25.4…</code></pre>
-<p>Why didn’t that import properly? Let’s have a look at the URL of the data. Ah right. It’s a .txt, not a .csv.</p>
+<p>This imported just as one column. Why didn’t that import properly? Let’s have a look at the URL of the data. Ah right. It’s a .txt, not a .csv.</p>
 <p>OK. <code>readr</code> should have a function to read in .txt files. Let’s navigate to the help menu and have a look. In the bottom right RStudio pane, click on “Packages”. Type <code>readr</code> in the search menu, then click on its name. This will let you see all of the functions within the package.</p>
 <p>There are a lot of options, but let’s try <code>read_table</code>. It will return a dataframe.</p>
 <pre class="r"><code>## read_table
 buoy_raw &lt;- read_table(buoy_url)
 head(buoy) ## still not quite right -- missed some columns. </code></pre>
-<pre><code>## # A tibble: 6 x 1
-##   `#YY  MM DD hh mm WDIR WSPD GST  WVHT   DPD   APD MWD   PRES  ATMP  WTM…
-##   &lt;chr&gt;                                                                   
-## 1 #yr  mo dy hr mn degT m/s  m/s     m   sec   sec deg    hPa  degC  degC…
-## 2 2010 01 01 00 00 999 99.0 99.0 99.00 99.00 99.00 999 1012.4 999.0  25.4…
-## 3 2010 01 01 00 06 999 99.0 99.0 99.00 99.00 99.00 999 1012.4 999.0  25.4…
-## 4 2010 01 01 00 12 999 99.0 99.0 99.00 99.00 99.00 999 1012.2 999.0  25.4…
-## 5 2010 01 01 00 18 999 99.0 99.0 99.00 99.00 99.00 999 1012.2 999.0  25.4…
-## 6 2010 01 01 00 24 999 99.0 99.0 99.00 99.00 99.00 999 1012.1 999.0  25.4…</code></pre>
+<p>Why might that be? What is the delimiter for this file? This is when, if I can, I would actually <em>look</em> at the file. I’m going to open the file in a text editor, or even copy-paste a few lines. I use TextWrangler. There, I can “show invisibles” and see what the delimiters are:</p>
+<p><br></p>
+<div class="figure">
+<img src="images/text_editor_show_invisibles.png" />
+
+</div>
+<p><br></p>
+<p>Here the dots show spaces (and a triangle would be a tab, not shown here). So I can see that there is mostly one space separating columns, but there are also up to 5 spaces! This kind of inconsistency can be a problem. This type of file is called a fixed width file.</p>
+<p>But…luckily the <code>read_table2()</code> allows for this, because it “allows any number of whitespace characters between columns”. Woop woop!</p>
 <pre class="r"><code>## read_table2
-buoy_raw &lt;- read_table2(buoy_url)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `#YY` = col_character(),
-##   MM = col_character(),
-##   DD = col_character(),
-##   hh = col_character(),
-##   mm = col_character(),
-##   WDIR = col_character(),
-##   WSPD = col_character(),
-##   GST = col_character(),
-##   WVHT = col_character(),
-##   DPD = col_character(),
-##   APD = col_character(),
-##   MWD = col_character(),
-##   PRES = col_character(),
-##   ATMP = col_character(),
-##   WTMP = col_character(),
-##   DEWP = col_character(),
-##   VIS = col_character(),
-##   TIDE = col_character()
-## )</code></pre>
-<pre class="r"><code>head(buoy_raw) ## this is what we need!</code></pre>
-<pre><code>## # A tibble: 6 x 18
-##   `#YY` MM    DD    hh    mm    WDIR  WSPD  GST   WVHT  DPD   APD   MWD  
-##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
-## 1 #yr   mo    dy    hr    mn    degT  m/s   m/s   m     sec   sec   deg  
-## 2 2010  01    01    00    00    999   99.0  99.0  99.00 99.00 99.00 999  
-## 3 2010  01    01    00    06    999   99.0  99.0  99.00 99.00 99.00 999  
-## 4 2010  01    01    00    12    999   99.0  99.0  99.00 99.00 99.00 999  
-## 5 2010  01    01    00    18    999   99.0  99.0  99.00 99.00 99.00 999  
-## 6 2010  01    01    00    24    999   99.0  99.0  99.00 99.00 99.00 999  
-## # ... with 6 more variables: PRES &lt;chr&gt;, ATMP &lt;chr&gt;, WTMP &lt;chr&gt;,
-## #   DEWP &lt;chr&gt;, VIS &lt;chr&gt;, TIDE &lt;chr&gt;</code></pre>
-<p>In creating this tutorial, I actually tried a few other options that didn’t work for various reasons. But cool to see them and why they didn’t work:</p>
+buoy_raw &lt;- read_table2(buoy_url)
+head(buoy_raw) ## this is what we need!</code></pre>
+<p>Great, this is what we needed for import!</p>
+<p>In creating this tutorial, I actually tried a few other options that didn’t work for various reasons. I spared us from trying this all together (in the interest of time) — but educational to see them and why they didn’t work:</p>
 <pre class="r"><code>## this just wasn&#39;t the right approach
-d_test &lt;- read_delim(buoy_url, delim = &quot; &quot;, trim_ws = TRUE, skip=1)</code></pre>
-<pre><code>## Warning: Missing column names filled in: &#39;X2&#39; [2], &#39;X9&#39; [9], &#39;X11&#39; [11],
-## &#39;X12&#39; [12], &#39;X13&#39; [13], &#39;X14&#39; [14], &#39;X16&#39; [16], &#39;X17&#39; [17], &#39;X19&#39; [19],
-## &#39;X20&#39; [20], &#39;X23&#39; [23], &#39;X24&#39; [24], &#39;X25&#39; [25], &#39;X27&#39; [27], &#39;X29&#39; [29],
-## &#39;X31&#39; [31], &#39;X33&#39; [33], &#39;X35&#39; [35], &#39;X36&#39; [36], &#39;X37&#39; [37]</code></pre>
-<pre><code>## Warning: Duplicated column names deduplicated: &#39;m/s&#39; =&gt; &#39;m/s_1&#39; [10], &#39;sec&#39;
-## =&gt; &#39;sec_1&#39; [21], &#39;degC&#39; =&gt; &#39;degC_1&#39; [30], &#39;degC&#39; =&gt; &#39;degC_2&#39; [32]</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
-## a multiple of vector length (arg 1)</code></pre>
-<pre><code>## Warning: 84434 parsing failures.
-## row # A tibble: 5 x 5 col     row col   expected   actual     file                                   expected   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;                                  actual 1     1 &lt;NA&gt;  38 columns 19 columns &#39;http://www.ndbc.noaa.gov/view_text_f… file 2     2 &lt;NA&gt;  38 columns 19 columns &#39;http://www.ndbc.noaa.gov/view_text_f… row 3     3 &lt;NA&gt;  38 columns 19 columns &#39;http://www.ndbc.noaa.gov/view_text_f… col 4     4 &lt;NA&gt;  38 columns 19 columns &#39;http://www.ndbc.noaa.gov/view_text_f… expected 5     5 &lt;NA&gt;  38 columns 19 columns &#39;http://www.ndbc.noaa.gov/view_text_f…
-## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
-## See problems(...) for more details.</code></pre>
-<p>This involved way too many steps, and saving a temporary copy of the data (unideal!)</p>
-<pre class="r"><code>d_test &lt;- read_lines(buoy_url)
-y &lt;- d_test %&gt;%
+buoy_test &lt;- read_delim(buoy_url, delim = &quot; &quot;, trim_ws = TRUE, skip=1)</code></pre>
+<p>This is something I tried to illustrate when you should think to yourself “someone has figured out a better way to do this”. I tried to force it and it involved way too many steps and workarounds, and saving a temporary copy of the data. Boo! This is super unideal. If you find yourself going down a road like this, stop, expect that you’re not the first person to ever access data structured like this, and look for a better way!!!!</p>
+<pre class="r"><code>buoy_test &lt;- read_lines(buoy_url)
+y &lt;- buoy_test %&gt;%
   as_data_frame() %&gt;%
   mutate(value = str_replace_all(value, &#39; +&#39;, &#39;,&#39;)) 
 write_delim(y, &#39;data/buoy_local_copy.csv&#39;)
 
 z &lt;- read_csv(&#39;data/buoy_local_copy.csv&#39;, skip=1)
-## PRAISE BE</code></pre>
-<p>Cool. Nice that <code>read_table2</code> was designed to get the job done.</p>
+head(z) ## PRAISE BE</code></pre>
+<p>Cool. Nice that <code>read_table2</code> was designed to get the job done — we just have to expect that it exists and find it.</p>
 </div>
 <div id="wrangle-1" class="section level3">
 <h3>Wrangle</h3>
 <p>We’ve got <code>buoy_raw</code> as the raw data we read from online. Let’s create a new variable called <code>buoy</code> that we’ll wrangle instead of that raw data (especially nice if you’ve got poor internet and don’t want to read it in each time!)</p>
 <pre class="r"><code>buoy &lt;- buoy_raw</code></pre>
 <p>Let’s look at the column headers.</p>
-<pre><code>##  [1] &quot;#YY&quot;  &quot;MM&quot;   &quot;DD&quot;   &quot;hh&quot;   &quot;mm&quot;   &quot;WDIR&quot; &quot;WSPD&quot; &quot;GST&quot;  &quot;WVHT&quot; &quot;DPD&quot; 
-## [11] &quot;APD&quot;  &quot;MWD&quot;  &quot;PRES&quot; &quot;ATMP&quot; &quot;WTMP&quot; &quot;DEWP&quot; &quot;VIS&quot;  &quot;TIDE&quot;</code></pre>
-<p>We’ve got two rows of information about what the data represent. R thinks that the first row are the column headers, and it considers the second row data. Let’s clean up those names. But we don’t want to lose either of those rows, because they both have important and unique information (measurement and units).</p>
+<pre class="r"><code>names(buoy)
+head(buoy)</code></pre>
+<p>OK. As we know, our data frame needs one column header. But we’ve actually got two rows of information about what the data represent. R thinks that the first row are the column headers, and it considers the second row data. Let’s clean up those names. But we don’t want to lose either of those rows, because they both have important and unique information (measurement and units).</p>
 <p>So, let’s see if we can take that the first row of data (the units) and stick it on the with the column names (measurement). Then, we can get rid of that units row.</p>
 <p>In the <code>stringr</code> package, there is a way to combine strings using the <code>str_c</code> function.</p>
 <p>There’s 3 things we want to do to these column names:</p>
 <ol style="list-style-type: decimal">
-<li>make the column header a combo of rows 1 and 2</li>
+<li>make the column header a combo of rows 1 and 2
+<ul>
+<li>we want this to look like this: <code>currentheader_row1</code>. So we want to combine these two rows with a <code>_</code></li>
+<li>we want to identify row1 by name, not <code>buoy[1,]</code> because a) it’s cryptic, and b) it will introduce silent problems if you run this code more than once</li>
+</ul></li>
 <li>clean up the header; get rid of <code>#</code> and <code>/</code></li>
 <li>delete the now-redundant row 1</li>
 </ol>
+<p>So let’s start with the first step:</p>
 <pre class="r"><code>## 1. overwrite column names
-names(buoy) &lt;- str_c(names(buoy),                  ## first thing to combine
-                  buoy %&gt;% filter(`#YY` == &quot;#yr&quot;), ## second thing
-                  sep = &quot;_&quot;)                       ## separate by this
+names(buoy) &lt;- str_c(names(buoy),                  ## current header
+                  buoy %&gt;% filter(`#YY` == &quot;#yr&quot;), ## row1 -- don&#39;t say buoy[1,] 
+                  sep = &quot;_&quot;)                       ## separate by `_`
 
 ## inspect
 names(buoy) ## Looks a lot better</code></pre>
-<pre><code>##  [1] &quot;#YY_#yr&quot;   &quot;MM_mo&quot;     &quot;DD_dy&quot;     &quot;hh_hr&quot;     &quot;mm_mn&quot;    
-##  [6] &quot;WDIR_degT&quot; &quot;WSPD_m/s&quot;  &quot;GST_m/s&quot;   &quot;WVHT_m&quot;    &quot;DPD_sec&quot;  
-## [11] &quot;APD_sec&quot;   &quot;MWD_deg&quot;   &quot;PRES_hPa&quot;  &quot;ATMP_degC&quot; &quot;WTMP_degC&quot;
-## [16] &quot;DEWP_degC&quot; &quot;VIS_nmi&quot;   &quot;TIDE_ft&quot;</code></pre>
+<p>Now the second step:</p>
 <pre class="r"><code>## 2. clean up a bit more to get rid of the `#`s and the `/`s. 
-names(buoy) &lt;- str_replace_all(names(buoy), &quot;#&quot;, &quot;&quot;)  # replace `#` with nothing (`&quot;&quot;`)
+names(buoy) &lt;- str_replace_all(names(buoy), &quot;#&quot;, &quot;&quot;)  # replace `#` with nothing 
 names(buoy) &lt;- str_replace_all(names(buoy), &quot;/&quot;, &quot;_&quot;) # replace `/` with `_`
 
 ## inspect to make sure it worked
 names(buoy)</code></pre>
-<pre><code>##  [1] &quot;YY_yr&quot;     &quot;MM_mo&quot;     &quot;DD_dy&quot;     &quot;hh_hr&quot;     &quot;mm_mn&quot;    
-##  [6] &quot;WDIR_degT&quot; &quot;WSPD_m_s&quot;  &quot;GST_m_s&quot;   &quot;WVHT_m&quot;    &quot;DPD_sec&quot;  
-## [11] &quot;APD_sec&quot;   &quot;MWD_deg&quot;   &quot;PRES_hPa&quot;  &quot;ATMP_degC&quot; &quot;WTMP_degC&quot;
-## [16] &quot;DEWP_degC&quot; &quot;VIS_nmi&quot;   &quot;TIDE_ft&quot;</code></pre>
 <p>Cool, that looks good enough for now!</p>
-<p>Now, let’s remove that first row that still displays the units. Note that since it is the first line, we could do this by deliberately saying line 1, but I don’t want to do that because I could easily and silently start deleting rows of data if I ran these lines over and over.</p>
-<pre class="r"><code>## inspect dimensions
-dim(buoy)</code></pre>
-<pre><code>## [1] 84435    18</code></pre>
+<p>Final step! Let’s just have a look in the Environment pane to see how many rows there are now (84435 rows, 18 columns)</p>
 <pre class="r"><code>## 3. remove redundant row with units
 buoy &lt;- buoy %&gt;%
-  filter(YY_yr != &quot;#yr&quot;)
-
-## inspect again
-dim(buoy)</code></pre>
-<pre><code>## [1] 84434    18</code></pre>
+  filter(YY_yr != &quot;#yr&quot;)</code></pre>
+<p>I saw it, did you? In the Environment pane it now says 84434x18. Let’s have another look:</p>
 <pre class="r"><code>head(buoy)</code></pre>
-<pre><code>## # A tibble: 6 x 18
-##   YY_yr MM_mo DD_dy hh_hr mm_mn WDIR_degT WSPD_m_s GST_m_s WVHT_m DPD_sec
-##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  
-## 1 2010  01    01    00    00    999       99.0     99.0    99.00  99.00  
-## 2 2010  01    01    00    06    999       99.0     99.0    99.00  99.00  
-## 3 2010  01    01    00    12    999       99.0     99.0    99.00  99.00  
-## 4 2010  01    01    00    18    999       99.0     99.0    99.00  99.00  
-## 5 2010  01    01    00    24    999       99.0     99.0    99.00  99.00  
-## 6 2010  01    01    00    30    203       2.1      3.9     99.00  99.00  
-## # ... with 8 more variables: APD_sec &lt;chr&gt;, MWD_deg &lt;chr&gt;, PRES_hPa &lt;chr&gt;,
-## #   ATMP_degC &lt;chr&gt;, WTMP_degC &lt;chr&gt;, DEWP_degC &lt;chr&gt;, VIS_nmi &lt;chr&gt;,
-## #   TIDE_ft &lt;chr&gt;</code></pre>
-<pre class="r"><code>## and what would happen if we reran this? 
-buoy &lt;- buoy %&gt;%
-  filter(YY_yr != &quot;#yr&quot;)
-
-## inspect again -- no change!
-dim(buoy)</code></pre>
-<pre><code>## [1] 84434    18</code></pre>
-<pre class="r"><code>head(buoy)</code></pre>
-<pre><code>## # A tibble: 6 x 18
-##   YY_yr MM_mo DD_dy hh_hr mm_mn WDIR_degT WSPD_m_s GST_m_s WVHT_m DPD_sec
-##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  
-## 1 2010  01    01    00    00    999       99.0     99.0    99.00  99.00  
-## 2 2010  01    01    00    06    999       99.0     99.0    99.00  99.00  
-## 3 2010  01    01    00    12    999       99.0     99.0    99.00  99.00  
-## 4 2010  01    01    00    18    999       99.0     99.0    99.00  99.00  
-## 5 2010  01    01    00    24    999       99.0     99.0    99.00  99.00  
-## 6 2010  01    01    00    30    203       2.1      3.9     99.00  99.00  
-## # ... with 8 more variables: APD_sec &lt;chr&gt;, MWD_deg &lt;chr&gt;, PRES_hPa &lt;chr&gt;,
-## #   ATMP_degC &lt;chr&gt;, WTMP_degC &lt;chr&gt;, DEWP_degC &lt;chr&gt;, VIS_nmi &lt;chr&gt;,
-## #   TIDE_ft &lt;chr&gt;</code></pre>
-<p>OK this is looking pretty good now.</p>
-<p>Let’s say we want to compare these temperatures to the benthic species from above. What could we join these datasets on?</p>
-<p>Date.</p>
-<p>OK let’s look at these dates — looks like we’ll have to clean them up. Right now the dates are across several columns. Let’s combine them into dates.</p>
+<p>And what would happen if we reran this?</p>
+<pre class="r"><code>buoy &lt;- buoy %&gt;%
+  filter(YY_yr != &quot;#yr&quot;)</code></pre>
+<p>Nothing, which is great! But if we’d removed <code>buoy[1,]</code>, we’d lose a row of data (silently).</p>
+</div>
+<div id="explore-1" class="section level3">
+<h3>Explore</h3>
+<p>Since we want to analyze these temperatures to the benthic species from above, let’s get a visual of what the temperature data looks like, and then we’ll think about how this relates with the benthic species.</p>
+<div id="temperature" class="section level4">
+<h4>Temperature</h4>
+<pre class="r"><code>ggplot(buoy, aes(WTMP_degC)) +
+  geom_bar()</code></pre>
+<p><img src="tidy_coral_files/figure-html/plot%20buoy-1.png" width="672" /></p>
+<pre class="r"><code>## I googled how to rotate the tick label axis so that we can read the labels:
+ggplot(buoy, aes(WTMP_degC)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90))</code></pre>
+<p><img src="tidy_coral_files/figure-html/plot%20buoy-2.png" width="672" /></p>
+<p>OK. So there is a lot to take in here.</p>
+<p>Consider this a <strong>to do list</strong> when you start working on your own.</p>
+<ol style="list-style-type: decimal">
+<li>Seems like 999.0 is not really a measured °Celsius</li>
+</ol>
+<ul>
+<li>After confirming with the metadata, we should replace it with NA <code>stringr::str_replace_all()</code></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><code>WTMP_degC</code> does not seem to be numeric (since 999.0 is right there next to 28.6).</li>
+</ol>
+<ul>
+<li>We could confirm this with <code>str(buoy)</code>, then convert to numeric with <code>buoy &lt;- buoy %&gt;% mutate(WTMP_degC = as.numeric(WTMP_degC))</code></li>
+<li>Why is this a string? So actually all variables in <code>buoy</code> are character instead of numeric, and it’s because when we originally read in the file the first row was measurement units, which was a character string. So any of these that we want to treat of numbers we are going to have to explicitly change to numeric.</li>
+</ul>
+</div>
+<div id="dates" class="section level4">
+<h4>Dates</h4>
+<p>Let’s have another look at the dates in <code>buoy</code>, because this is probably how we’re going to join to the benthic data. As a reminder:</p>
+<pre class="r"><code>head(benthic)
+head(buoy)</code></pre>
+<p>So the date formats are different between these two datasets, and so we can’t join them as-is. Benthic’s date format is <code>2010-03-12</code> and in the buoy dataset it is spread across 3 columns (and also has hours and minutes).</p>
+<p>So before we can join we need to wrangle those buoy dates. We know the format we want them to look like, so we can combine them into a new column named <code>date</code> using <code>tidyr::unite()</code>. When we unite these columns it will actually replace the original columns with out new column:</p>
 <pre class="r"><code>buoy &lt;- buoy %&gt;%
   unite(date, c(YY_yr, MM_mo, DD_dy), sep = &quot;-&quot;)
 
 head(buoy)</code></pre>
 <pre><code>## # A tibble: 6 x 16
-##   date       hh_hr mm_mn WDIR_degT WSPD_m_s GST_m_s WVHT_m DPD_sec APD_sec
-##   &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;  
-## 1 2010-01-01 00    00    999       99.0     99.0    99.00  99.00   99.00  
-## 2 2010-01-01 00    06    999       99.0     99.0    99.00  99.00   99.00  
-## 3 2010-01-01 00    12    999       99.0     99.0    99.00  99.00   99.00  
-## 4 2010-01-01 00    18    999       99.0     99.0    99.00  99.00   99.00  
-## 5 2010-01-01 00    24    999       99.0     99.0    99.00  99.00   99.00  
-## 6 2010-01-01 00    30    203       2.1      3.9     99.00  99.00   99.00  
+##         date hh_hr mm_mn WDIR_degT WSPD_m_s GST_m_s WVHT_m DPD_sec APD_sec
+##        &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;
+## 1 2010-01-01    00    00       999     99.0    99.0  99.00   99.00   99.00
+## 2 2010-01-01    00    06       999     99.0    99.0  99.00   99.00   99.00
+## 3 2010-01-01    00    12       999     99.0    99.0  99.00   99.00   99.00
+## 4 2010-01-01    00    18       999     99.0    99.0  99.00   99.00   99.00
+## 5 2010-01-01    00    24       999     99.0    99.0  99.00   99.00   99.00
+## 6 2010-01-01    00    30       203      2.1     3.9  99.00   99.00   99.00
 ## # ... with 7 more variables: MWD_deg &lt;chr&gt;, PRES_hPa &lt;chr&gt;,
 ## #   ATMP_degC &lt;chr&gt;, WTMP_degC &lt;chr&gt;, DEWP_degC &lt;chr&gt;, VIS_nmi &lt;chr&gt;,
 ## #   TIDE_ft &lt;chr&gt;</code></pre>
 </div>
 </div>
+</div>
 <div id="join-datasets" class="section level2">
 <h2>Join datasets</h2>
 <p>Great, let’s join these datasets!</p>
-<pre class="r"><code>d_join &lt;- benthic %&gt;%
+<p>We can use <a href="http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf">RStudio’s data wrangling cheatsheet</a> as a reminder:</p>
+<div class="figure">
+<img src="images/rstudio-cheatsheet-combine-options.png" />
+
+</div>
+<p>Let’s go with left join by date:</p>
+<pre class="r"><code>bb_join &lt;- benthic %&gt;%
   left_join(buoy, by = &quot;date&quot;)</code></pre>
-<p>We’ve got a lot of observations, our joined dataframe has way more rows than both the buoy data and the benthic data! What happened? How do we fix it?</p>
-<pre class="r"><code>head(d_join[, c(&quot;id_name&quot;, &quot;x&quot;, &quot;y&quot;, &quot;date&quot;, &quot;hh_hr&quot;,&quot;mm_mn&quot;,&quot;WTMP_degC&quot;)])</code></pre>
-<pre><code>## # A tibble: 6 x 7
-##   id_name                   x     y date       hh_hr mm_mn WTMP_degC
-##   &lt;chr&gt;                 &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;    
-## 1 Pocillopora meandrina  1773  1000 2010-03-12 00    00    23.2     
-## 2 Pocillopora meandrina  1773  1000 2010-03-12 00    06    23.2     
-## 3 Pocillopora meandrina  1773  1000 2010-03-12 00    12    23.2     
-## 4 Pocillopora meandrina  1773  1000 2010-03-12 00    18    23.2     
-## 5 Pocillopora meandrina  1773  1000 2010-03-12 00    24    23.2     
-## 6 Pocillopora meandrina  1773  1000 2010-03-12 00    30    23.2</code></pre>
+<p>Woah, just from the Environment pane we can see there are A LOT of observations based on this join. What happened? Let’s have a look:</p>
+<pre class="r"><code>head(bb_join) # kind of hard to see what&#39;s going on.
+
+## let&#39;s select a few columns and inspect:
+bb_join %&gt;%
+  select(id_name, x, y, date, hh_hr, mm_mn, WTMP_degC) %&gt;%
+  head()</code></pre>
+<p>OK, so because the buoy data has sampling every 6 minutes, there is a lot of repeated data as a result of the join. Is that what we want? If not, what should we do?</p>
+<p>We could summarize the buoy data by hour or day, or filter the hours that the benthic survey took place. What we do will depend on the science questions you are asking!</p>
 </div>
 <div id="your-turn" class="section level2">
 <h2>Your turn</h2>
-<div id="ideas" class="section level3">
-<h3>Ideas:</h3>
-<div id="explore-benthic-data" class="section level4">
-<h4>Explore benthic data</h4>
+<p>Save, commit, and sync your work. Then, continue the analysis based on what you’re interested in. Here are some ideas:</p>
+<div id="explore-benthic-data" class="section level3">
+<h3>Explore benthic data</h3>
 <ul>
 <li>what other ways could you visualize the data? What questions does bring up?</li>
 </ul>
 </div>
-<div id="explore-buoy-data" class="section level4">
-<h4>Explore buoy data</h4>
+<div id="explore-buoy-data" class="section level3">
+<h3>Explore buoy data</h3>
 <p>What are some other things we could do to this data?</p>
+<ol style="list-style-type: decimal">
+<li>Seems like 999.0 is not really a measured °Celsius
 <ul>
-<li>all of these values are strings instead of numbers (because of that <code>#yr</code> row). We could change them so we can treat them as numbers (math) instead of words</li>
-<li>combine the date columns</li>
-<li>missing data: what does 99.0 mean? How about 999?</li>
-<li>what should you plot?</li>
-</ul>
+<li>After confirming with the metadata, we should replace it with NA <code>stringr::str_replace_all()</code></li>
+</ul></li>
+<li><code>WTMP_degC</code> does not seem to be numeric (since 999.0 is right there next to 28.6).
+<ul>
+<li>We could confirm this with <code>str(buoy)</code>, then convert to numeric with <code>buoy &lt;- buoy %&gt;% mutate(WTMP_degC = as.numeric(WTMP_degC))</code></li>
+<li>Why is this a string? So actually all variables in <code>buoy</code> are character instead of numeric, and it’s because when we originally read in the file the first row was measurement units, which was a character string. So any of these that we want to treat of numbers we are going to have to explicitly change to numeric.</li>
+</ul></li>
+<li>How would you plot a timeseries of temperature change?</li>
+</ol>
 </div>
-<div id="explore-joined-data" class="section level4">
-<h4>Explore joined data</h4>
+<div id="explore-joined-data" class="section level3">
+<h3>Explore joined data</h3>
 <ul>
 <li>what variables should you compare? Temperature?</li>
 <li>should you summarize species counts first?</li>
 </ul>
 </div>
-<div id="explore-beyond" class="section level4">
-<h4>Explore beyond</h4>
+<div id="explore-beyond" class="section level3">
+<h3>Explore beyond</h3>
 <ul>
 <li>Compare a different buoy and benthic pair?</li>
 </ul>
 </div>
 </div>
+
+
+
 </div>
-
-
-
+</div>
 
 </div>
 
