@@ -29,5 +29,16 @@ This workshop will cover the basic principles of data archiving and data reposit
 
 ## Prerequisites
 
-Prepare the data you are planning to archive!!
+Prepare and bring the data you want to archive!!
+
+## Participants 
+
+```{r, echo=FALSE, child="data-rescue-participants.Rmd"}
+```
+
+## Workshop leads
+
+CRESCYNT: Ruth Gates and Ouida Meier
+
+NCEAS:  Julien Brun, Jeannette Clark, Julie Stewart Lowndes
 
