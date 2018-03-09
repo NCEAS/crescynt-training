@@ -180,14 +180,14 @@ In creating this tutorial, I actually tried a few other options that didn't work
 
 ```{r read_delim, eval=FALSE}
 ## this just wasn't the right approach
-d_test <- read_delim(buoy_url, delim = " ", trim_ws = TRUE, skip=1)
+buoy_test <- read_delim(buoy_url, delim = " ", trim_ws = TRUE, skip=1)
 ```
 
 This is something I tried to illustrate when you should think to yourself "someone has figured out a better way to do this". I tried to force it and it involved way too many steps and workarounds, and saving a temporary copy of the data. Boo! This is super unideal. If you find yourself going down a road like this, stop, expect that you're not the first person to ever access data structured like this, and look for a better way!!!!
 
-```{r read_lines, message=FALSE, warning=FALSE}
-d_test <- read_lines(buoy_url)
-y <- d_test %>%
+```{r read_lines, eval=FALSE}
+buoy_test <- read_lines(buoy_url)
+y <- buoy_test %>%
   as_data_frame() %>%
   mutate(value = str_replace_all(value, ' +', ',')) 
 write_delim(y, 'data/buoy_local_copy.csv')
@@ -206,7 +206,7 @@ buoy <- buoy_raw
 ```
 
 Let's look at the column headers.
-```{r}
+```{r, eval=FALSE}
 names(buoy)
 head(buoy)
 ```
@@ -220,14 +220,14 @@ In the `stringr` package, there is a way to combine strings using the `str_c` fu
 There's 3 things we want to do to these column names: 
 
 1. make the column header a combo of rows 1 and 2
-  - we want this to be `currentheader_row1`. So we want to combine them with a `_`
-  - we want to identify row1 by name, not `buoy[1,]` because a) it's cryptic b) it will introduce silent problems if you run this code more than once
+    - we want this to look like this: `currentheader_row1`. So we want to combine these two rows with a `_`
+    - we want to identify row1 by name, not `buoy[1,]` because a) it's cryptic, and b) it will introduce silent problems if you run this code more than once
 1. clean up the header; get rid of `#` and `/`
 1. delete the now-redundant row 1
 
 So let's start with the first step:
 
-```{r clean col names}
+```{r clean col names, results='hide'}
 ## 1. overwrite column names
 names(buoy) <- str_c(names(buoy),                  ## current header
                   buoy %>% filter(`#YY` == "#yr"), ## row1 -- don't say buoy[1,] 
@@ -239,7 +239,7 @@ names(buoy) ## Looks a lot better
 
 Now the second step:
 
-```{r}
+```{r, results='hide'}
 ## 2. clean up a bit more to get rid of the `#`s and the `/`s. 
 names(buoy) <- str_replace_all(names(buoy), "#", "")  # replace `#` with nothing 
 names(buoy) <- str_replace_all(names(buoy), "/", "_") # replace `/` with `_`
@@ -259,7 +259,7 @@ buoy <- buoy %>%
 
 I saw it, did you? In the Environment pane it now says 84434x18. Let's have another look:
 
-```{r}
+```{r, eval=FALSE}
 head(buoy)
 ```
 
@@ -270,23 +270,47 @@ buoy <- buoy %>%
   filter(YY_yr != "#yr")
 ```
 
-Nothing, which is great! But if we'd removed `buoy[1,]`, we'd be losing data (silently). 
+Nothing, which is great! But if we'd removed `buoy[1,]`, we'd lose a row of data (silently). 
 
-OK. This is looking pretty good now. 
+### Explore
 
-Let's say we want to compare these temperatures to the benthic species from above. Let's get a visual of what this data looks like, and then we'll think about how this relates with the benthic species. 
+Since we want to analyze these temperatures to the benthic species from above, let's get a visual of what the temperature data looks like, and then we'll think about how this relates with the benthic species. 
 
-```{r}
-## ggplot
+#### Temperature
+
+```{r plot buoy}
+ggplot(buoy, aes(WTMP_degC)) +
+  geom_bar()
+
+## I googled how to rotate the tick label axis so that we can read the labels:
+ggplot(buoy, aes(WTMP_degC)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90))
+
 ```
 
+OK. So there is a lot to take in here. 
 
+Consider this a **to do list** when you start working on your own. 
 
-What could we join these datasets on?
+1. Seems like 999.0 is not really a measured °Celsius
+  - After confirming with the metadata, we should replace it with NA `stringr::str_replace_all()`
+1. `WTMP_degC` does not seem to be numeric (since 999.0 is right there next to 28.6).
+  - We could confirm this with `str(buoy)`, then convert to numeric with `buoy <- buoy %>% mutate(WTMP_degC = as.numeric(WTMP_degC))`
+  - Why is this a string? So actually all variables in `buoy` are character instead of numeric, and it's because when we originally read in the file the first row was measurement units, which was a character string. So any of these that we want to treat of numbers we are going to have to explicitly change to numeric. 
 
-Date. 
+#### Dates
 
-OK let's look at these dates — looks like we'll have to clean them up. Right now the dates are across several columns. Let's combine them into dates. 
+Let's have another look at the dates in `buoy`, because this is probably how we're going to join to the benthic data. As a reminder: 
+
+```{r, eval=FALSE}
+head(benthic)
+head(buoy)
+```
+
+So the date formats are different between these two datasets, and so we can't join them as-is. Benthic's date format is `2010-03-12` and in the buoy dataset it is spread across 3 columns (and also has hours and minutes).
+
+So before we can join we need to wrangle those buoy dates. We know the format we want them to look like, so we can combine them into a new column named `date` using `tidyr::unite()`. When we unite these columns it will actually replace the original columns with out new column:
 
 ```{r unite}
 buoy <- buoy %>%
@@ -295,47 +319,63 @@ buoy <- buoy %>%
 head(buoy)
 ```
 
-
 ## Join datasets
 
 Great, let's join these datasets!
 
+We can use [RStudio's data wrangling cheatsheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) as a reminder: 
+
+![](images/rstudio-cheatsheet-combine-options.png)
+
+Let's go with left join by date:
 
 ```{r}
-d_join <- benthic %>%
+bb_join <- benthic %>%
   left_join(buoy, by = "date")
 ```
 
+Woah, just from the Environment pane we can see there are A LOT of observations based on this join. What happened? Let's have a look:
 
-We've got a lot of observations, our joined dataframe has way more rows than both the buoy data and the benthic data! What happened? How do we fix it?
+```{r, eval=FALSE}
+head(bb_join) # kind of hard to see what's going on.
 
-```{r}
-head(d_join[, c("id_name", "x", "y", "date", "hh_hr","mm_mn","WTMP_degC")])
+## let's select a few columns and inspect:
+bb_join %>%
+  select(id_name, x, y, date, hh_hr, mm_mn, WTMP_degC) %>%
+  head()
 ```
+
+OK, so because the buoy data has sampling every 6 minutes, there is a lot of repeated data as a result of the join. Is that what we want? If not, what should we do? 
+
+We could summarize the buoy data by hour or day, or filter the hours that the benthic survey took place. What we do will depend on the science questions you are asking! 
 
 ## Your turn
 
-### Ideas: 
+Save, commit, and sync your work. Then, continue the analysis based on what you're interested in. Here are some ideas:
 
-#### Explore benthic data
+
+### Explore benthic data
 
 - what other ways could you visualize the data? What questions does bring up?
 
 
-#### Explore buoy data
+### Explore buoy data
 
 What are some other things we could do to this data? 
 
-- all of these values are strings instead of numbers (because of that `#yr` row). We could change them so we can treat them as numbers (math) instead of words
-- combine the date columns
-- missing data: what does 99.0 mean? How about 999?
-- what should you plot?
+1. Seems like 999.0 is not really a measured °Celsius
+    - After confirming with the metadata, we should replace it with NA `stringr::str_replace_all()`
+1. `WTMP_degC` does not seem to be numeric (since 999.0 is right there next to 28.6).
+    - We could confirm this with `str(buoy)`, then convert to numeric with `buoy <- buoy %>% mutate(WTMP_degC = as.numeric(WTMP_degC))`
+    - Why is this a string? So actually all variables in `buoy` are character instead of numeric, and it's because when we originally read in the file the first row was measurement units, which was a character string. So any of these that we want to treat of numbers we are going to have to explicitly change to numeric. 
+1. How would you plot a timeseries of temperature change? 
 
-#### Explore joined data
+### Explore joined data
 
 - what variables should you compare? Temperature?
 - should you summarize species counts first?
 
-#### Explore beyond
+### Explore beyond
 
 - Compare a different buoy and benthic pair?
+
