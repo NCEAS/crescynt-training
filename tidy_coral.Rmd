@@ -35,9 +35,9 @@ Then we'll add a setup chunk:
 ```{r setup, warning=FALSE, message=FALSE}
 ## libraries
 library(tidyverse)
-library(stringr)
 library(janitor) # install.packages('janitor')
 library(skimr) # install.packages('skimr')
+library(stringr) # added when we needed it for benthic data
 
 ## data filepaths/urls ----
 
@@ -50,15 +50,17 @@ buoy_url <- 'http://www.ndbc.noaa.gov/view_text_file.php?filename=mokh1h2010.txt
 
 ## Benthic data
 
-This is benthic data from a series of CRAMP (Coral Reef Assessment Monitoring Program) data that includes KBay coral survey still images and extracted data (with larger Hawaiian Islands context):
+This is benthic data from a series of CRAMP (Coral Reef Assessment Monitoring Program) data that includes Kaneohe Bay coral survey still images and extracted data (with larger Hawaiian Islands context):
 
 [2015. Hawaii Coral Reef Assessment and Monitoring Program (CRAMP): benthic data from digital still images made in 2008-2010 on Kauai, Oahu, Molokai, Maui, and Hawaii (NODC Accession 0104255). NOAA NCEI Oceanographic Data Archive.](https://search.dataone.org/#view/{6A218D8B-05CD-49EA-AC13-FD0372B3B1D4}) 
 
 We have to navigate to [here](https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd05/Oahu/OaHan/) and download it; I've saved it in the /data folder.
 
-### Import
+### Import from a local file
 
-```{r read_csv benthic, message=FALSE}
+Let's import and have a look with `head()` and the Environment pane.
+
+```{r read_csv benthic, message=FALSE, results='hide'}
 benthic_raw <- read_csv(benthic_filepath)
 head(benthic_raw) 
 ```
@@ -67,38 +69,48 @@ There is a lot of columns that are all NA, but let's not worry about that right 
 
 ### Wrangle
 
-Let's use the janitor package to clean up the column headers. We can actually just create this new `benthic` object through our pipe here: 
+Let's use the janitor package to clean up the column headers. Let's create a new `benthic` object with a pipe:
+
 ```{r janitor and skimr}
 ## the `janitor` package's `clean_names` function
 benthic <- benthic_raw %>%
   janitor::clean_names()
 
-head(benthic)
+names(benthic)
 ```
-`janitor::clean_names()` is such a useful function!
+
+`janitor::clean_names()` is such a useful function for taking messy column headers and cleaning them up!
 
 Let's pull out a few columns that look useful for working with and go from there. 
+
 ```{r select benthic}
 benthic <- benthic %>%
   select(id_name, point, x, y, id_date)
 
 head(benthic)
 ```
+
 Great. But let's have another look at those dates. There are some weird `#`s leading and trailing the dates that will surely cause trouble later, and they don't look good. So let's remove them. We can create another column called simply "date". 
 
-Let's go back up to the setup and add `stringr` to the setup chunk and run it. 
+Let's go back up to the setup and add `library(stringr)` to the setup chunk and run it. 
+
 ```{r}
 benthic <- benthic %>%
-  mutate(date = str_remove_all(id_date, "#"))
+  mutate(date = stringr::str_remove_all(id_date, "#"))
 ```
 
 ### Explore
 
 Now let's have a quick look at some summary stats:
-```{r skim benthic}
+
+```{r summary benthic, results='hide'}
 summary(benthic)
+```
+
+```{r skim benthic}
 skimr::skim(benthic)
 ```
+
 `skimr::skim()` lets us see quickly that there are 6 unique dates and 16 unique species. It will also make cool histograms of continueous data, although we won't focus on that at the moment. 
 
 Let's check out which species are represented. 
@@ -107,56 +119,72 @@ Let's check out which species are represented.
 unique(benthic$id_name)
 ```
 
-And let's just have a quick plot of species count by date: 
+And to get a sense of our data let's just have a quick plot of species count by date: 
 
 ```{r plot benthic}
 ggplot(benthic, aes(date, fill = id_name)) +
          geom_bar()
 ```
-OK so there would be a lot of ways we could improve this plot. But we just wanted a quick look. And this will help us frame our questions later. For example: 
+
+OK so there would be a lot of ways we could improve this plot (starting with color and how it is grouped!). But we just wanted a quick look. And this could help us frame our scientific questions later on. For example: 
 
 - why do total counts increase so much through time?
+- ...
 
 Great! Let's leave this for a moment and read in the other data. 
 
 ## Buoy data
 
-### Import
+### Import from a url
 
 Let's also have a look in the Environment pane as we read in the data.
 
-```{r read_csv, message=FALSE}
+```{r read_csv, message=FALSE, results='hide'}
 buoy <- readr::read_csv(buoy_url)
 head(buoy) # hmm this doesn't look right! Why not?
 ```
 
-Why didn't that import properly? Let's have a look at the URL of the data. Ah right. It's a .txt, not a .csv. 
+This imported just as one column. Why didn't that import properly? Let's have a look at the URL of the data. Ah right. It's a .txt, not a .csv. 
 
 OK. `readr` should have a function to read in .txt files. Let's navigate to the help menu and have a look. In the bottom right RStudio pane, click on "Packages". Type `readr` in the search menu, then click on its name. This will let you see all of the functions within the package. 
 
 There are a lot of options, but let's try `read_table`. It will return a dataframe.
 
-```{r read_table, message=FALSE}
+```{r read_table, message=FALSE, results='hide'}
 ## read_table
 buoy_raw <- read_table(buoy_url)
 head(buoy) ## still not quite right -- missed some columns. 
 ```
 
-```{r}
+Why might that be? What is the delimiter for this file? This is when, if I can, I would actually *look* at the file. I'm going to open the file in a text editor, or even copy-paste a few lines. I use TextWrangler. There, I can "show invisibles" and see what the delimiters are: 
+
+<br> 
+
+![](images/text_editor_show_invisibles.png)
+
+<br> 
+
+Here the dots show spaces (and a triangle would be a tab, not shown here). So I can see that there is mostly one space separating columns, but there are also up to 5 spaces! This kind of inconsistency can be a problem. This type of file is called a fixed width file.
+
+But...luckily the `read_table2()` allows for this, because it "allows any number of whitespace characters between columns". Woop woop!
+
+```{r, warning=FALSE, message=FALSE, results='hide'}
 ## read_table2
 buoy_raw <- read_table2(buoy_url)
 head(buoy_raw) ## this is what we need!
 ```
 
+Great, this is what we needed for import!
 
-In creating this tutorial, I actually tried a few other options that didn't work for various reasons. But cool to see them and why they didn't work:
+In creating this tutorial, I actually tried a few other options that didn't work for various reasons. I spared us from trying this all together (in the interest of time) — but educational to see them and why they didn't work:
 
-```{r read_delim, message=FALSE}
+```{r read_delim, eval=FALSE}
 ## this just wasn't the right approach
 d_test <- read_delim(buoy_url, delim = " ", trim_ws = TRUE, skip=1)
 ```
 
-This involved way too many steps, and saving a temporary copy of the data (unideal!)
+This is something I tried to illustrate when you should think to yourself "someone has figured out a better way to do this". I tried to force it and it involved way too many steps and workarounds, and saving a temporary copy of the data. Boo! This is super unideal. If you find yourself going down a road like this, stop, expect that you're not the first person to ever access data structured like this, and look for a better way!!!!
+
 ```{r read_lines, message=FALSE, warning=FALSE}
 d_test <- read_lines(buoy_url)
 y <- d_test %>%
@@ -165,10 +193,10 @@ y <- d_test %>%
 write_delim(y, 'data/buoy_local_copy.csv')
 
 z <- read_csv('data/buoy_local_copy.csv', skip=1)
-## PRAISE BE
+head(z) ## PRAISE BE
 ```
 
-Cool. Nice that `read_table2` was designed to get the job done.
+Cool. Nice that `read_table2` was designed to get the job done — we just have to expect that it exists and find it. 
 
 ### Wrangle
 
@@ -178,11 +206,12 @@ buoy <- buoy_raw
 ```
 
 Let's look at the column headers.
-```{r, echo=FALSE}
+```{r}
 names(buoy)
+head(buoy)
 ```
 
-We've got two rows of information about what the data represent. R thinks that the first row are the column headers, and it considers the second row data. Let's clean up those names. But we don't want to lose either of those rows, because they both have important and unique information (measurement and units). 
+OK. As we know, our data frame needs one column header. But we've actually got two rows of information about what the data represent. R thinks that the first row are the column headers, and it considers the second row data. Let's clean up those names. But we don't want to lose either of those rows, because they both have important and unique information (measurement and units). 
 
 So, let's see if we can take that the first row of data (the units) and stick it on the with the column names (measurement). Then, we can get rid of that units row. 
 
@@ -191,23 +220,28 @@ In the `stringr` package, there is a way to combine strings using the `str_c` fu
 There's 3 things we want to do to these column names: 
 
 1. make the column header a combo of rows 1 and 2
+  - we want this to be `currentheader_row1`. So we want to combine them with a `_`
+  - we want to identify row1 by name, not `buoy[1,]` because a) it's cryptic b) it will introduce silent problems if you run this code more than once
 1. clean up the header; get rid of `#` and `/`
 1. delete the now-redundant row 1
 
+So let's start with the first step:
+
 ```{r clean col names}
 ## 1. overwrite column names
-names(buoy) <- str_c(names(buoy),                  ## first thing to combine
-                  buoy %>% filter(`#YY` == "#yr"), ## second thing
-                  sep = "_")                       ## separate by this
+names(buoy) <- str_c(names(buoy),                  ## current header
+                  buoy %>% filter(`#YY` == "#yr"), ## row1 -- don't say buoy[1,] 
+                  sep = "_")                       ## separate by `_`
 
 ## inspect
 names(buoy) ## Looks a lot better
 ```
 
-```{r}
+Now the second step:
 
+```{r}
 ## 2. clean up a bit more to get rid of the `#`s and the `/`s. 
-names(buoy) <- str_replace_all(names(buoy), "#", "")  # replace `#` with nothing (`""`)
+names(buoy) <- str_replace_all(names(buoy), "#", "")  # replace `#` with nothing 
 names(buoy) <- str_replace_all(names(buoy), "/", "_") # replace `/` with `_`
 
 ## inspect to make sure it worked
@@ -216,34 +250,38 @@ names(buoy)
 
 Cool, that looks good enough for now!
 
-Now, let's remove that first row that still displays the units. Note that since it is the first line, we could do this by deliberately saying line 1, but I don't want to do that because I could easily and silently start deleting rows of data if I ran these lines over and over. 
-
+Final step! Let's just have a look in the Environment pane to see how many rows there are now (84435 rows, 18 columns)
 ```{r}
-## inspect dimensions
-dim(buoy)
-
 ## 3. remove redundant row with units
 buoy <- buoy %>%
   filter(YY_yr != "#yr")
-
-## inspect again
-dim(buoy)
-head(buoy)
 ```
+
+I saw it, did you? In the Environment pane it now says 84434x18. Let's have another look:
 
 ```{r}
-## and what would happen if we reran this? 
-buoy <- buoy %>%
-  filter(YY_yr != "#yr")
-
-## inspect again -- no change!
-dim(buoy)
 head(buoy)
 ```
 
-OK this is looking pretty good now.
+And what would happen if we reran this? 
 
-Let's say we want to compare these temperatures to the benthic species from above.
+```{r}
+buoy <- buoy %>%
+  filter(YY_yr != "#yr")
+```
+
+Nothing, which is great! But if we'd removed `buoy[1,]`, we'd be losing data (silently). 
+
+OK. This is looking pretty good now. 
+
+Let's say we want to compare these temperatures to the benthic species from above. Let's get a visual of what this data looks like, and then we'll think about how this relates with the benthic species. 
+
+```{r}
+## ggplot
+```
+
+
+
 What could we join these datasets on?
 
 Date. 
