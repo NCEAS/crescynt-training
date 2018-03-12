@@ -1,5 +1,18 @@
 |time       |      Day 1|      Day 2|      Day 3|      Day 4|
 |:----------|----------:|----------:|----------:|----------:|
+|9-10:30    |  Welcome and goals of the workshop (CRESCYNT); Motivation for data science and coral reefs (NCEAS - JL) |   [Data wrangling: `dplyr`](http://ohi-science.org/data-science-training/dplyr.html#dplyr) (NCEAS - JB) | Kaneohe Bay Workathon (all day) | Kaneohe Bay Workathon (all day)  | 
+|break      |  | | | |
+|11-12:30   | [R, RStudio & RMarkdown](http://ohi-science.org/data-science-training/rstudio.html#rstudio) (NCEAS - JL) |   [Data wrangling: `tidyr`](http://ohi-science.org/data-science-training/tidyr) (NCEAS - JB) |  | |
+|lunch      |  || | |
+|13:30-15:00 |  [GitHub](http://ohi-science.org/data-science-training/github.html) (NCEAS - JL) |  [Collaborating with GitHub](http://ohi-science.org/data-science-training/collaborating.html) (NCEAS - JL) | Imagery/ interpolation breakout group (CRESCYNT) | Group Discussion/ Wrapup |
+|break      |  |  | | |
+|15:30-17:00 | [Visualization (ggplot2)](http://ohi-science.org/data-science-training/viz) (NCEAS - JC) |   [Data integration: tidy coral example](https://nceas.github.io/crescynt-training/tidy_coral) (NCEAS - JL)  | Imagery/ interpolation breakout group (CRESCYNT)  | Group Discussion/ Wrapup |
+
+<!--- 
+Full schedule with programming:
+
+|time       |      Day 1|      Day 2|      Day 3|      Day 4|
+|:----------|----------:|----------:|----------:|----------:|
 |9-10:30    |  Welcome & [Motivation](http://ohi-science.org/data-science-training/overview.html); [R, RStudio & RMarkdown](http://ohi-science.org/data-science-training/rstudio.html#rstudio) (NCEAS - JL) |   [Data wrangling: `dplyr`](http://ohi-science.org/data-science-training/dplyr.html#dplyr) (NCEAS - JB) | Kaneohe Bay Workathon (all day) | Kaneohe Bay Workathon (all day)  | 
 |break      |  | | | |
 |11-12:30   | [GitHub](http://ohi-science.org/data-science-training/github.html) (NCEAS - JL) |   [Data wrangling: `tidyr`](http://ohi-science.org/data-science-training/tidyr) (NCEAS - JB) |  | |
@@ -8,3 +21,4 @@
 |break      |  |  | | |
 |15:30-17:00 | [Visualization (ggplot2)](http://ohi-science.org/data-science-training/viz) (NCEAS - JC) |   [Data integration: tidy coral example](https://nceas.github.io/crescynt-training/tidy_coral) (NCEAS - JC)  | Imagery/ interpolation breakout group (CRESCYNT)  | Group Discussion/ Wrapup |
 
+--->
