@@ -26,7 +26,7 @@ This workshop is going to be fun, because learning these open data science tools
 
 ## Workshop schedule 
 
-[Google drive folder](https://drive.google.com/drive/folders/1MeWy3qAr-2hZSd72PgLE-q0QGKaUTHEq)
+[Google drive folder](https://drive.google.com/drive/folders/1MeWy3qAr-2hZSd72PgLE-q0QGKaUTHEq) 
 
 ```{r, echo=FALSE, child="data-integration-schedule.Rmd"}
 ```
