@@ -4,18 +4,20 @@
 
 Instructors: 
 
-- Julien Brun twitter & github: @brunj7
-- Jeanette Clark t: @sjeanetteclark, g: @jeanetteclark
-- Julie Stewart Lowndes t: @juliesquid, g: @jules32
+- Julien Brun — twitter & github: @brunj7
+- Jeanette Clark — t: @sjeanetteclark, g: @jeanetteclark
+- Julie Stewart Lowndes — t: @juliesquid, g: @jules32
 
-In the workshop we'll use the **sticky notes** to indicate whether everything is OK (blue) or not (pink).
+In the workshop we'll use **sticky notes** to indicate whether everything is OK (blue) or not (pink).
 
 **If you've successfully done the following, please put a blue sticky note up on your laptop.** 
 
-- **R**: Download and install most recent version 3.4.3: https://cloud.r-project.org
-- **RStudio**: Download and install most recent version 1.1423: http://www.rstudio.com/download
-- **Github**: Create an account: https://github.com Note! *Shorter names that kind of identify you are better, and use your work email!*
+1. **R**: Download and install most recent version 3.4.3: https://cloud.r-project.org
+1. **RStudio**: Download and install most recent version 1.1423: http://www.rstudio.com/download
+1. **Github**: Create an account: https://github.com Note! *Shorter names that kind of identify you are better, and use your work email!*
 
+
+----
 
 [Google Doc Link](https://docs.google.com/document/d/1UaKHPpz3cgcwUrY_M68zGfahmewdLuPMRQUJJZFiKRg/edit#)
 
