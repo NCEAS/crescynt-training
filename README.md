@@ -8,7 +8,7 @@ Instructors:
 - Jeanette Clark — t: @sjeanetteclark, g: @jeanetteclark
 - Julie Stewart Lowndes — t: @juliesquid, g: @jules32
 
-In the workshop we'll use **sticky notes** to indicate whether everything is OK (blue) or not (pink).
+In the workshop we'll use **sticky notes** to indicate whether everything is OK (blue) or not (orange).
 
 **If you've successfully done the following, please put a blue sticky note up on your laptop.** 
 
