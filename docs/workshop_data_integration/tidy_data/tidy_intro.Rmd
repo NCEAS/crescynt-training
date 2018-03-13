@@ -1,0 +1,41 @@
+---
+title: "Wrangling Tidy Data"
+author: "CRESCYNT Data Integration Workshop - Julien Brun (NCEAS), 2018"
+time_slot: 10 minutes
+output:
+  ioslides_presentation:
+    logo: images/NCEAS_logo_small.png
+    wide: 'true'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Data Wrangling
+
+```{r fig.cap = "http://r4ds.had.co.nz/introduction.html", out.width = "85%"}
+knitr::include_graphics("images/data-science-diagram.png")
+```
+
+
+## Normalized Data, aka Tidy Data
+
+- Each variable is a column
+- Each observation is a row
+- Each cell as one value
+- Each type of observational unit is a table
+
+```{r fig.cap = "http://r4ds.had.co.nz/tidy-data.html"}
+knitr::include_graphics("images/tidy.png")
+```
+
+
+## Split-Apply-Combine Strategy
+
+```{r fig.cap = "https://swcarpentry.github.io/r-novice-gapminder/12-plyr/"}
+knitr::include_graphics("images/split-apply-combine.png")
+```
+
+
+
