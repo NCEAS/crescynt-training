@@ -13,7 +13,6 @@ We are going to begin a tidy coral analysis that you will continue on your own. 
 
 Our plan is to combine benthic observation data with oceanographic buoy data and explore patterns. 
 
-The benthic data comes from digital still images through the [Hawaii Coral Reef Assessment and Monitoring Program (CRAMP)](https://search.dataone.org/#view/{21548C09-57F9-449A-86B2-470A1DD4F0B5}), and the buoy data is from the [Kaneohe Bay NOAA buoy at Coconut Island (Station MOKH1)](http://www.ndbc.noaa.gov/station_history.php?station=mokh1).
 
 We'll also be using a few new R packages that are super helpful: `stringr`, `janitor`, and `skimr`. 
 
@@ -42,7 +41,7 @@ library(stringr) # added when we needed it for benthic data
 ## data filepaths/urls ----
 
 ## benthic data
-benthic_filepath <- 'data/100308OaAla03m.CSV'
+benthic_url <- 'https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd08/100308OaAla03m.CSV'
 
 ## buoy data
 buoy_url <- 'http://www.ndbc.noaa.gov/view_text_file.php?filename=mokh1h2010.txt.gz&dir=data/historical/stdmet/'
@@ -54,14 +53,14 @@ This is benthic data from a series of CRAMP (Coral Reef Assessment Monitoring Pr
 
 [2015. Hawaii Coral Reef Assessment and Monitoring Program (CRAMP): benthic data from digital still images made in 2008-2010 on Kauai, Oahu, Molokai, Maui, and Hawaii (NODC Accession 0104255). NOAA NCEI Oceanographic Data Archive.](https://search.dataone.org/#view/{6A218D8B-05CD-49EA-AC13-FD0372B3B1D4}) 
 
-We have to navigate to [here](https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd05/Oahu/OaHan/) and download it; I've saved it in the /data folder.
+We the data we are using resides [here](https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd08/).
 
-### Import from a local file
+### Import from a URL
 
 Let's import and have a look with `head()` and the Environment pane.
 
 ```{r read_csv benthic, message=FALSE, results='hide'}
-benthic_raw <- read_csv(benthic_filepath)
+benthic_raw <- read_csv(benthic_url)
 head(benthic_raw) 
 ```
 
@@ -134,6 +133,8 @@ OK so there would be a lot of ways we could improve this plot (starting with col
 Great! Let's leave this for a moment and read in the other data. 
 
 ## Buoy data
+
+The buoy data come from the [National Buoy Data Center](http://www.ndbc.noaa.gov/). We are going to use data from the inner Kaneohe Bay buoy (station MOKH1). More details on this station are available [here](http://www.ndbc.noaa.gov/station_page.php?station=MOKH1).
 
 ### Import from a url
 
@@ -338,7 +339,9 @@ Woah, just from the Environment pane we can see there are A LOT of observations 
 
 ```{r, eval=FALSE}
 head(bb_join) # kind of hard to see what's going on.
+```
 
+```{r}
 ## let's select a few columns and inspect:
 bb_join %>%
   select(id_name, x, y, date, hh_hr, mm_mn, WTMP_degC) %>%

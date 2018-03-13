@@ -226,7 +226,6 @@ div.tocify {
 <h2>Overview</h2>
 <p>We are going to begin a tidy coral analysis that you will continue on your own. We’ll be using what we learned in the <a href="http://ohi-science.org/data-science-training/">data-science-training</a> but with real coral data from Oahu.</p>
 <p>Our plan is to combine benthic observation data with oceanographic buoy data and explore patterns.</p>
-<p>The benthic data comes from digital still images through the <a href="https://search.dataone.org/#view/%7B21548C09-57F9-449A-86B2-470A1DD4F0B5%7D">Hawaii Coral Reef Assessment and Monitoring Program (CRAMP)</a>, and the buoy data is from the <a href="http://www.ndbc.noaa.gov/station_history.php?station=mokh1">Kaneohe Bay NOAA buoy at Coconut Island (Station MOKH1)</a>.</p>
 <p>We’ll also be using a few new R packages that are super helpful: <code>stringr</code>, <code>janitor</code>, and <code>skimr</code>.</p>
 <p><strong>Objectives</strong></p>
 <ul>
@@ -250,7 +249,7 @@ library(stringr) # added when we needed it for benthic data
 ## data filepaths/urls ----
 
 ## benthic data
-benthic_filepath &lt;- &#39;data/100308OaAla03m.CSV&#39;
+benthic_url &lt;- &#39;https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd08/100308OaAla03m.CSV&#39;
 
 ## buoy data
 buoy_url &lt;- &#39;http://www.ndbc.noaa.gov/view_text_file.php?filename=mokh1h2010.txt.gz&amp;dir=data/historical/stdmet/&#39;</code></pre>
@@ -259,11 +258,11 @@ buoy_url &lt;- &#39;http://www.ndbc.noaa.gov/view_text_file.php?filename=mokh1h2
 <h2>Benthic data</h2>
 <p>This is benthic data from a series of CRAMP (Coral Reef Assessment Monitoring Program) data that includes Kaneohe Bay coral survey still images and extracted data (with larger Hawaiian Islands context):</p>
 <p><a href="https://search.dataone.org/#view/%7B6A218D8B-05CD-49EA-AC13-FD0372B3B1D4%7D">2015. Hawaii Coral Reef Assessment and Monitoring Program (CRAMP): benthic data from digital still images made in 2008-2010 on Kauai, Oahu, Molokai, Maui, and Hawaii (NODC Accession 0104255). NOAA NCEI Oceanographic Data Archive.</a></p>
-<p>We have to navigate to <a href="https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd05/Oahu/OaHan/">here</a> and download it; I’ve saved it in the /data folder.</p>
-<div id="import-from-a-local-file" class="section level3">
-<h3>Import from a local file</h3>
+<p>We the data we are using resides <a href="https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd08/">here</a>.</p>
+<div id="import-from-a-url" class="section level3">
+<h3>Import from a URL</h3>
 <p>Let’s import and have a look with <code>head()</code> and the Environment pane.</p>
-<pre class="r"><code>benthic_raw &lt;- read_csv(benthic_filepath)
+<pre class="r"><code>benthic_raw &lt;- read_csv(benthic_url)
 head(benthic_raw) </code></pre>
 <p>There is a lot of columns that are all NA, but let’s not worry about that right now.</p>
 </div>
@@ -289,14 +288,14 @@ names(benthic)</code></pre>
 
 head(benthic)</code></pre>
 <pre><code>## # A tibble: 6 x 5
-##                 id_name point     x     y      id_date
-##                   &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;        &lt;chr&gt;
+##   id_name               point     x     y id_date     
+##   &lt;chr&gt;                 &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;       
 ## 1 Pocillopora meandrina     1  1773  1000 #2010-03-12#
-## 2            Turf algae     2  2308   194 #2010-03-12#
-## 3       Coralline algae     3  1700  1782 #2010-03-12#
-## 4       Coralline algae     4  2470   584 #2010-03-12#
-## 5       Coralline algae     5   314  1145 #2010-03-12#
-## 6            Turf algae     6   198  1660 #2010-03-12#</code></pre>
+## 2 Turf algae                2  2308   194 #2010-03-12#
+## 3 Coralline algae           3  1700  1782 #2010-03-12#
+## 4 Coralline algae           4  2470   584 #2010-03-12#
+## 5 Coralline algae           5   314  1145 #2010-03-12#
+## 6 Turf algae                6   198  1660 #2010-03-12#</code></pre>
 <p>Great. But let’s have another look at those dates. There are some weird <code>#</code>s leading and trailing the dates that will surely cause trouble later, and they don’t look good. So let’s remove them. We can create another column called simply “date”.</p>
 <p>Let’s go back up to the setup and add <code>library(stringr)</code> to the setup chunk and run it.</p>
 <pre class="r"><code>benthic &lt;- benthic %&gt;%
@@ -351,7 +350,8 @@ head(benthic)</code></pre>
 </div>
 <div id="buoy-data" class="section level2">
 <h2>Buoy data</h2>
-<div id="import-from-a-url" class="section level3">
+<p>The buoy data come from the <a href="http://www.ndbc.noaa.gov/">National Buoy Data Center</a>. We are going to use data from the inner Kaneohe Bay buoy (station MOKH1). More details on this station are available <a href="http://www.ndbc.noaa.gov/station_page.php?station=MOKH1">here</a>.</p>
+<div id="import-from-a-url-1" class="section level3">
 <h3>Import from a url</h3>
 <p>Let’s also have a look in the Environment pane as we read in the data.</p>
 <pre class="r"><code>buoy &lt;- readr::read_csv(buoy_url)
@@ -477,14 +477,14 @@ head(buoy)</code></pre>
 
 head(buoy)</code></pre>
 <pre><code>## # A tibble: 6 x 16
-##         date hh_hr mm_mn WDIR_degT WSPD_m_s GST_m_s WVHT_m DPD_sec APD_sec
-##        &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;
-## 1 2010-01-01    00    00       999     99.0    99.0  99.00   99.00   99.00
-## 2 2010-01-01    00    06       999     99.0    99.0  99.00   99.00   99.00
-## 3 2010-01-01    00    12       999     99.0    99.0  99.00   99.00   99.00
-## 4 2010-01-01    00    18       999     99.0    99.0  99.00   99.00   99.00
-## 5 2010-01-01    00    24       999     99.0    99.0  99.00   99.00   99.00
-## 6 2010-01-01    00    30       203      2.1     3.9  99.00   99.00   99.00
+##   date       hh_hr mm_mn WDIR_degT WSPD_m_s GST_m_s WVHT_m DPD_sec APD_sec
+##   &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;  
+## 1 2010-01-01 00    00    999       99.0     99.0    99.00  99.00   99.00  
+## 2 2010-01-01 00    06    999       99.0     99.0    99.00  99.00   99.00  
+## 3 2010-01-01 00    12    999       99.0     99.0    99.00  99.00   99.00  
+## 4 2010-01-01 00    18    999       99.0     99.0    99.00  99.00   99.00  
+## 5 2010-01-01 00    24    999       99.0     99.0    99.00  99.00   99.00  
+## 6 2010-01-01 00    30    203       2.1      3.9     99.00  99.00   99.00  
 ## # ... with 7 more variables: MWD_deg &lt;chr&gt;, PRES_hPa &lt;chr&gt;,
 ## #   ATMP_degC &lt;chr&gt;, WTMP_degC &lt;chr&gt;, DEWP_degC &lt;chr&gt;, VIS_nmi &lt;chr&gt;,
 ## #   TIDE_ft &lt;chr&gt;</code></pre>
@@ -503,12 +503,20 @@ head(buoy)</code></pre>
 <pre class="r"><code>bb_join &lt;- benthic %&gt;%
   left_join(buoy, by = &quot;date&quot;)</code></pre>
 <p>Woah, just from the Environment pane we can see there are A LOT of observations based on this join. What happened? Let’s have a look:</p>
-<pre class="r"><code>head(bb_join) # kind of hard to see what&#39;s going on.
-
-## let&#39;s select a few columns and inspect:
+<pre class="r"><code>head(bb_join) # kind of hard to see what&#39;s going on.</code></pre>
+<pre class="r"><code>## let&#39;s select a few columns and inspect:
 bb_join %&gt;%
   select(id_name, x, y, date, hh_hr, mm_mn, WTMP_degC) %&gt;%
   head()</code></pre>
+<pre><code>## # A tibble: 6 x 7
+##   id_name                   x     y date       hh_hr mm_mn WTMP_degC
+##   &lt;chr&gt;                 &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;    
+## 1 Pocillopora meandrina  1773  1000 2010-03-12 00    00    23.2     
+## 2 Pocillopora meandrina  1773  1000 2010-03-12 00    06    23.2     
+## 3 Pocillopora meandrina  1773  1000 2010-03-12 00    12    23.2     
+## 4 Pocillopora meandrina  1773  1000 2010-03-12 00    18    23.2     
+## 5 Pocillopora meandrina  1773  1000 2010-03-12 00    24    23.2     
+## 6 Pocillopora meandrina  1773  1000 2010-03-12 00    30    23.2</code></pre>
 <p>OK, so because the buoy data has sampling every 6 minutes, there is a lot of repeated data as a result of the join. Is that what we want? If not, what should we do?</p>
 <p>We could summarize the buoy data by hour or day, or filter the hours that the benthic survey took place. What we do will depend on the science questions you are asking!</p>
 </div>
