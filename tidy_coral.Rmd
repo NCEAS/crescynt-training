@@ -53,7 +53,7 @@ This is benthic data from a series of CRAMP (Coral Reef Assessment Monitoring Pr
 
 [2015. Hawaii Coral Reef Assessment and Monitoring Program (CRAMP): benthic data from digital still images made in 2008-2010 on Kauai, Oahu, Molokai, Maui, and Hawaii (NODC Accession 0104255). NOAA NCEI Oceanographic Data Archive.](https://data.nodc.noaa.gov/cgi-bin/iso?id=gov.noaa.nodc:0104255)
 
-We the data we are using resides [here](https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd08/).
+The data we are using resides [here](https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd08/).
 
 ### Import from a URL
 
