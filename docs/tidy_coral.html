@@ -358,6 +358,10 @@ head(benthic)</code></pre>
 <p>Let’s also have a look in the Environment pane as we read in the data.</p>
 <pre class="r"><code>buoy &lt;- readr::read_csv(buoy_url)
 head(buoy) # hmm this doesn&#39;t look right! Why not?</code></pre>
+<div id="or-import-a-local-file" class="section level4">
+<h4>Or import a local file!</h4>
+<p>We could also read this in from a local file if we wanted to. For example:</p>
+<pre class="r"><code>buoy_raw &lt;- read_csv(&quot;data/buoy_local_copy.csv&quot;)</code></pre>
 <p>This imported just as one column. Why didn’t that import properly? Let’s have a look at the URL of the data. Ah right. It’s a .txt, not a .csv.</p>
 <p>OK. <code>readr</code> should have a function to read in .txt files. Let’s navigate to the help menu and have a look. In the bottom right RStudio pane, click on “Packages”. Type <code>readr</code> in the search menu, then click on its name. This will let you see all of the functions within the package.</p>
 <p>There are a lot of options, but let’s try <code>read_table</code>. It will return a dataframe.</p>
@@ -390,6 +394,7 @@ write_delim(y, &#39;data/buoy_local_copy.csv&#39;)
 z &lt;- read_csv(&#39;data/buoy_local_copy.csv&#39;, skip=1)
 head(z) ## PRAISE BE</code></pre>
 <p>Cool. Nice that <code>read_table2</code> was designed to get the job done — we just have to expect that it exists and find it.</p>
+</div>
 </div>
 <div id="wrangle-1" class="section level3">
 <h3>Wrangle</h3>

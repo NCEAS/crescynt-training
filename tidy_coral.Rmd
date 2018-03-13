@@ -144,6 +144,13 @@ Let's also have a look in the Environment pane as we read in the data.
 buoy <- readr::read_csv(buoy_url)
 head(buoy) # hmm this doesn't look right! Why not?
 ```
+#### Or import a local file!
+
+We could also read this in from a local file if we wanted to. For example:
+
+```{r, eval = FALSE}
+buoy_raw <- read_csv("data/buoy_local_copy.csv")
+```
 
 This imported just as one column. Why didn't that import properly? Let's have a look at the URL of the data. Ah right. It's a .txt, not a .csv. 
 
