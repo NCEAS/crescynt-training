@@ -51,7 +51,7 @@ buoy_url <- 'http://www.ndbc.noaa.gov/view_text_file.php?filename=mokh1h2010.txt
 
 This is benthic data from a series of CRAMP (Coral Reef Assessment Monitoring Program) data that includes Kaneohe Bay coral survey still images and extracted data (with larger Hawaiian Islands context):
 
-2015. Hawaii Coral Reef Assessment and Monitoring Program (CRAMP): benthic data from digital still images made in 2008-2010 on Kauai, Oahu, Molokai, Maui, and Hawaii (NODC Accession 0104255). NOAA NCEI Oceanographic Data Archive. https://search.dataone.org/#view/{6A218D8B-05CD-49EA-AC13-FD0372B3B1D4}
+[2015. Hawaii Coral Reef Assessment and Monitoring Program (CRAMP): benthic data from digital still images made in 2008-2010 on Kauai, Oahu, Molokai, Maui, and Hawaii (NODC Accession 0104255). NOAA NCEI Oceanographic Data Archive.](https://data.nodc.noaa.gov/cgi-bin/iso?id=gov.noaa.nodc:0104255)
 
 We the data we are using resides [here](https://www.nodc.noaa.gov/archive/arc0054/0104255/1.1/data/0-data/cd08/).
 
