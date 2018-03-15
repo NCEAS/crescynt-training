@@ -1,6 +1,7 @@
 ---
 title: "Tidy Coral"
 author: Julie Lowndes and Jeanette Clark
+date: "3/13/2018"
 output:
   html_document:
     toc: true
