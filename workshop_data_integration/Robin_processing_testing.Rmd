@@ -1,0 +1,62 @@
+---
+title: "Robin's Data Processing Example"
+author: "Jeanette Clark"
+date: "3/15/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, warning  = FALSE, message = FALSE}
+library(tidyverse)
+library(stringr)
+```
+
+Create a test dataframe, have to do some brute force on the column names to make sure they look like the real data.
+```{r}
+test <- data.frame(id = 1, "400.123" = 1, "512" = 1, "400.123_BR" = 1, "512_BR" = 1)
+colnames(test)[2] <- "400.123"; colnames(test)[3] <- "512"
+colnames(test)[4] <- "400.123_BR"; colnames(test)[5] <- "512_BR"
+head(test)
+```
+
+Here we use some complex logic to determine which columns look like numbers. We try to coerce the column names to a number, and look for the column indices for ones that did not get turned into `NA`.
+```{r}
+i <- which(
+      is.na(
+       as.numeric(
+        colnames(test))) == F)
+```
+Now we actually rename the column names of these numeric columns (the index of which is stored in `i`). We do this using `paste`, and we append a lower case x before these columns.
+```{r}
+colnames(test)[i] <- paste("x",colnames(test)[i], sep = "")
+colnames(test)
+```
+
+Next, select the "raw" wavelength columns by selecting all columns that don't end in BR. This ensures all of the identifying columns are also selected.
+```{r}
+test_raw_wide <- test %>% select(-ends_with("_BR"))
+print(test_raw_wide)
+```
+If we want to make this long, use gather over the wavelength (`starts_with("x")`) columns, and then use mutate to get rid of the "x" in the new wavelength column.
+```{r}
+test_raw_long <- test_raw_wide %>% 
+  gather(key = "wavelength", value = "number_raw", starts_with("x")) %>%
+  mutate(wavelength = str_replace_all(wavelength, "x", ""))
+print(test_raw_long)
+
+```
+Now we do the same for the brightness adjusted columns, selecting all the columns except the ones that start with x.
+```{r}
+test_BR_wide <- test %>% select(-starts_with("x"))
+print(test_BR_wide)
+```
+And finally, use gather and mutate to put this into long form and clean up the wavelength column.
+```{r}
+test_BR_long <- test_BR_wide %>% 
+  gather(key = "wavelength", value = "number_BR", ends_with("_BR")) %>%
+  mutate(wavelength = str_replace_all(wavelength, "_BR", ""))
+print(test_BR_long)
+```
