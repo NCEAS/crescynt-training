@@ -1,13 +1,25 @@
 ---
-title: "Untitled"
+title: "Demo RMarkdown features"
 author: "Julie"
 date: "3/14/2018"
 output: html_document
 ---
 
+## Demo these things:
+
+- naming chunks
+- `message=FALSE`
+- `warning=FALSE`
+- `eval=FALSE`
+- `echo=FALSE`
+- `results='hide'`
+- `child="another_rmarkdown.Rmd"`
+- Help > Cheatsheets > RMarkdown (there are 2!)
+
+- revert files from git tab
 
 
-```{r}
+```{r setup, warning=FALSE, message=FALSE}
 library(tidyverse) # install.packages('tidyverse')
 ```
 
@@ -17,15 +29,28 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
+```{r, child="another_rmarkdown.Rmd"}
+
+```
+
+
+```{r, eval=FALSE}
 summary(cars)
 ```
+
+Hide results but still evaluate
+```{r cars, results='hide'}
+x <-  3
+x
+```
+
 
 ## Including Plots
 
 You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
+x
 plot(pressure)
 ```
 
