@@ -218,6 +218,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Tidy Coral</h1>
 <h4 class="author"><em>Julie Lowndes and Jeanette Clark</em></h4>
+<h4 class="date"><em>3/13/2018</em></h4>
 
 </div>
 
@@ -563,6 +564,43 @@ bb_join %&gt;%
 <li>Compare a different buoy and benthic pair?</li>
 </ul>
 </div>
+</div>
+<div id="troubleshooting" class="section level2">
+<h2>Troubleshooting</h2>
+<p><strong>tidyverse stringi bug with R version 3.4.3</strong> <!---
+Errors, troubleshooting, and solutions:
+https://github.com/positivebob/crescynt_mcguinn/blob/d84adda3c32c4e32531a84ed9f9e090cd98c25ae/tidy_coral.Rmd
+---></p>
+<p>Our fix for now: uninstall tidyverse, and individually install <code>readr</code>, <code>dplyr</code>, <code>tidyr</code>, and then not <code>stringr</code>; instead, use base-R. So, use the following commands:</p>
+<p>To install and load packages:</p>
+<pre class="r"><code>## uninstall packages
+remove.packages(&#39;tidyverse&#39;)
+remove.packages(&#39;stringi&#39;)
+remove.packages(&#39;stringr&#39;)
+
+## install individual packages
+install.packages(&#39;readr&#39;)
+install.packages(&#39;dplyr&#39;)
+install.packages(&#39;tidyr&#39;)
+
+## load individual packages
+library(readr)
+library(dplyr)
+library(tidyr)</code></pre>
+<p>Here is <code>gsub</code> not <code>stringr</code>:</p>
+<pre class="r"><code>## not str_remove_all...
+benthic &lt;- benthic %&gt;%
+  mutate(date = stringr::str_remove_all(id_date, &quot;#&quot;))
+
+## ...use gsub instead
+benthic &lt;- benthic %&gt;% 
+  mutate(date = gsub(&quot;#&quot;,&quot;&quot;, id_date))
+
+## not str_replace_all...
+names(buoy) &lt;- str_replace_all(names(buoy), &quot;#&quot;, &quot;&quot;)
+
+## ...use gsub instead
+names(buoy) &lt;- gsub(&quot;#&quot;, &quot;&quot;,names(buoy)) # replace `#` with nothing </code></pre>
 </div>
 
 

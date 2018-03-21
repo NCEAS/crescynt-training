@@ -1,6 +1,7 @@
 ---
 title: "Tidy Coral"
 author: Julie Lowndes and Jeanette Clark
+date: "3/13/2018"
 output:
   html_document:
     toc: true
@@ -388,4 +389,51 @@ What are some other things we could do to this data?
 ### Explore beyond
 
 - Compare a different buoy and benthic pair?
+
+## Troubleshooting
+
+**tidyverse stringi bug with R version 3.4.3**
+<!---
+Errors, troubleshooting, and solutions:
+https://github.com/positivebob/crescynt_mcguinn/blob/d84adda3c32c4e32531a84ed9f9e090cd98c25ae/tidy_coral.Rmd
+--->
+
+Our fix for now: uninstall tidyverse, and individually install `readr`, `dplyr`, `tidyr`, and then not `stringr`; instead, use base-R. So, use the following commands:
+
+To install and load packages:
+```{r not tidyverse, eval=FALSE}
+## uninstall packages
+remove.packages('tidyverse')
+remove.packages('stringi')
+remove.packages('stringr')
+
+## install individual packages
+install.packages('readr')
+install.packages('dplyr')
+install.packages('tidyr')
+
+## load individual packages
+library(readr)
+library(dplyr)
+library(tidyr)
+```
+
+Here is `gsub` not `stringr`: 
+
+```{r gsub not stringr, eval=FALSE}
+## not str_remove_all...
+benthic <- benthic %>%
+  mutate(date = stringr::str_remove_all(id_date, "#"))
+
+## ...use gsub instead
+benthic <- benthic %>% 
+  mutate(date = gsub("#","", id_date))
+
+## not str_replace_all...
+names(buoy) <- str_replace_all(names(buoy), "#", "")
+
+## ...use gsub instead
+names(buoy) <- gsub("#", "",names(buoy)) # replace `#` with nothing 
+```
+
 

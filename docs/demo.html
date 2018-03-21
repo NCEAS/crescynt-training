@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Julie" />
+
+
+<title>Demo RMarkdown features</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Demo RMarkdown features</h1>
+<h4 class="author"><em>Julie</em></h4>
+<h4 class="date"><em>3/14/2018</em></h4>
+
+</div>
+
+
+<div id="demo-these-things" class="section level2">
+<h2>Demo these things:</h2>
+<ul>
+<li>naming chunks</li>
+<li><code>message=FALSE</code></li>
+<li><code>warning=FALSE</code></li>
+<li><code>eval=FALSE</code></li>
+<li><code>echo=FALSE</code></li>
+<li><code>results='hide'</code></li>
+<li><code>child=&quot;another_rmarkdown.Rmd&quot;</code></li>
+<li><p>Help &gt; Cheatsheets &gt; RMarkdown (there are 2!)</p></li>
+<li><p>revert files from git tab</p></li>
+</ul>
+<pre class="r"><code>library(tidyverse) # install.packages(&#39;tidyverse&#39;)</code></pre>
+</div>
+<div id="r-markdown" class="section level2">
+<h2>R Markdown</h2>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
+<table style="width:83%;">
+<colgroup>
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">time</th>
+<th align="right">Day 1</th>
+<th align="right">Day 2</th>
+<th align="right">Day 3</th>
+<th align="right">Day 4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">9-10:30</td>
+<td align="right">Welcome and goals of the workshop (CRESCYNT); <a href="http://ohi-science.org/data-science-training/overview.html">Motivation for data science and coral reefs</a> (NCEAS - JL)</td>
+<td align="right"><a href="http://ohi-science.org/data-science-training/dplyr.html#dplyr">Data wrangling: <code>dplyr</code></a> (NCEAS - JB)</td>
+<td align="right">Kaneohe Bay Workathon (all day)</td>
+<td align="right">Kaneohe Bay Workathon (all day)</td>
+</tr>
+<tr class="even">
+<td align="left">break</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">11-12:30</td>
+<td align="right"><a href="http://ohi-science.org/data-science-training/rstudio.html#rstudio">R, RStudio &amp; RMarkdown</a> (NCEAS - JL)</td>
+<td align="right"><a href="http://ohi-science.org/data-science-training/tidyr">Data wrangling: <code>tidyr</code></a> (NCEAS - JB)</td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">lunch</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">13:30-15:00</td>
+<td align="right"><a href="http://ohi-science.org/data-science-training/github.html">GitHub</a> (NCEAS - JL)</td>
+<td align="right"><a href="http://ohi-science.org/data-science-training/collaborating.html">Collaborating with GitHub</a> (NCEAS - JL)</td>
+<td align="right">Imagery/ interpolation breakout group (CRESCYNT)</td>
+<td align="right">Group Discussion/ Wrapup</td>
+</tr>
+<tr class="even">
+<td align="left">break</td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">15:30-17:00</td>
+<td align="right"><a href="http://ohi-science.org/data-science-training/ggplot2">Visualization (ggplot2)</a> (NCEAS - JC)</td>
+<td align="right"><a href="https://nceas.github.io/crescynt-training/tidy_coral">Data integration: tidy coral example</a> (NCEAS - JC)</td>
+<td align="right">Imagery/ interpolation breakout group (CRESCYNT)</td>
+<td align="right">Group Discussion/ Wrapup</td>
+</tr>
+</tbody>
+</table>
+<!--- 
+Full schedule with programming:
+
+|time       |      Day 1|      Day 2|      Day 3|      Day 4|
+|:----------|----------:|----------:|----------:|----------:|
+|9-10:30    |  Welcome & [Motivation](http://ohi-science.org/data-science-training/overview.html); [R, RStudio & RMarkdown](http://ohi-science.org/data-science-training/rstudio.html#rstudio) (NCEAS - JL) |   [Data wrangling: `dplyr`](http://ohi-science.org/data-science-training/dplyr.html#dplyr) (NCEAS - JB) | Kaneohe Bay Workathon (all day) | Kaneohe Bay Workathon (all day)  | 
+|break      |  | | | |
+|11-12:30   | [GitHub](http://ohi-science.org/data-science-training/github.html) (NCEAS - JL) |   [Data wrangling: `tidyr`](http://ohi-science.org/data-science-training/tidyr) (NCEAS - JB) |  | |
+|lunch      |  || | |
+|13:30-15:00 | [Collaborating with GitHub](http://ohi-science.org/data-science-training/collaborating.html) (NCEAS - JL) |  [Programming](http://ohi-science.org/data-science-training/programming.html) (NCEAS - JL) | Imagery/ interpolation breakout group (CRESCYNT) | Group Discussion/ Wrapup |
+|break      |  |  | | |
+|15:30-17:00 | [Visualization (ggplot2)](http://ohi-science.org/data-science-training/viz) (NCEAS - JC) |   [Data integration: tidy coral example](https://nceas.github.io/crescynt-training/tidy_coral) (NCEAS - JC)  | Imagery/ interpolation breakout group (CRESCYNT)  | Group Discussion/ Wrapup |
+
+--->
+<pre class="r"><code>summary(cars)</code></pre>
+<p>Hide results but still evaluate</p>
+<pre class="r"><code>x &lt;-  3
+x</code></pre>
+</div>
+<div id="including-plots" class="section level2">
+<h2>Including Plots</h2>
+<p>You can also embed plots, for example:</p>
+<pre><code>## [1] 3</code></pre>
+<p><img src="demo_files/figure-html/pressure-1.png" width="672" /></p>
+<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
